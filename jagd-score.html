@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#050d06">
+  <title>Jagd Score – Wildschwein</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-green:    #30d158;
+      --c-lime:     #a3e635;
+      --c-orange:   #ff9500;
+      --c-red:      #ff3b30;
+      --c-yellow:   #ffd60a;
+      --glass:      rgba(255, 255, 255, 0.065);
+      --glass-b:    rgba(255, 255, 255, 0.11);
+      --glass-h:    rgba(255, 255, 255, 0.10);
+      --t1:         rgba(255, 255, 255, 0.95);
+      --t2:         rgba(255, 255, 255, 0.58);
+      --t3:         rgba(255, 255, 255, 0.32);
+      --r:          22px;
+      --font:       -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100dvh;
+      background: radial-gradient(ellipse 120% 80% at 65% -10%,
+        #0f2d15 0%, #071009 35%, #020604 100%);
+      color: var(--t1);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Background orbs ─────────────────────────────────────────── */
+    .orbs {
+      position: fixed; inset: 0;
+      pointer-events: none; overflow: hidden; z-index: 0;
+    }
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(90px); will-change: transform;
+    }
+    .orb-1 {
+      width: 560px; height: 560px;
+      background: radial-gradient(circle, rgba(48,209,88,.18) 0%, transparent 70%);
+      top: -130px; right: -120px;
+      animation: float1 9s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, rgba(255,149,0,.10) 0%, transparent 70%);
+      bottom: 8%; left: -90px;
+      animation: float1 12s ease-in-out infinite reverse;
+    }
+    .orb-3 {
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(48,209,88,.07) 0%, transparent 70%);
+      top: 52%; left: 28%;
+      animation: float1 16s ease-in-out infinite 3s;
+    }
+    @keyframes float1 {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-18px) scale(1.02); }
+    }
+
+    /* ── Layout ──────────────────────────────────────────────────── */
+    .container {
+      position: relative; z-index: 1;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 28px 16px 60px;
+    }
+
+    /* ── Header ──────────────────────────────────────────────────── */
+    header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 26px;
+      padding-top: env(safe-area-inset-top, 0);
+    }
+    .h-icon {
+      font-size: 2.6rem; line-height: 1;
+      filter: drop-shadow(0 0 14px rgba(48,209,88,.5));
+    }
+    h1 {
+      font-size: 2rem; font-weight: 700;
+      letter-spacing: -.04em; line-height: 1.05;
+      background: linear-gradient(140deg, #fff 0%, rgba(255,255,255,.72) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      font-size: .82rem; color: var(--t2);
+      font-weight: 400; margin-top: 3px; letter-spacing: .01em;
+    }
+
+    /* ── Glass card ──────────────────────────────────────────────── */
+    .gc {
+      background: var(--glass);
+      border: 1px solid var(--glass-b);
+      border-radius: var(--r);
+      backdrop-filter: blur(22px) saturate(180%);
+      -webkit-backdrop-filter: blur(22px) saturate(180%);
+      box-shadow: 0 8px 36px rgba(0,0,0,.38), 0 1px 0 rgba(255,255,255,.05) inset;
+    }
+
+    /* ── Region toggle ───────────────────────────────────────────── */
+    .rtoggle {
+      display: flex;
+      background: rgba(0,0,0,.38);
+      border: 1px solid var(--glass-b);
+      border-radius: 100px;
+      padding: 4px; gap: 4px;
+      margin-bottom: 18px;
+    }
+    .rbtn {
+      flex: 1; background: transparent; border: none;
+      color: var(--t2); font-family: var(--font);
+      font-size: .9rem; font-weight: 500;
+      padding: 10px 18px; border-radius: 100px;
+      cursor: pointer; transition: all .22s ease;
+      letter-spacing: -.01em;
+    }
+    .rbtn.active {
+      background: rgba(48,209,88,.18);
+      color: var(--c-green);
+      border: 1px solid rgba(48,209,88,.28);
+    }
+    .rbtn:hover:not(.active) { background: var(--glass-h); color: var(--t1); }
+
+    /* ── Score hero ──────────────────────────────────────────────── */
+    .hero {
+      padding: 28px 24px 24px;
+      text-align: center; margin-bottom: 12px;
+    }
+    .ring-wrap {
+      position: relative; width: 192px; height: 192px;
+      margin: 0 auto 18px;
+    }
+    .score-svg {
+      width: 100%; height: 100%;
+      transform: rotate(-90deg);
+    }
+    .r-track {
+      fill: none;
+      stroke: rgba(255,255,255,.09);
+      stroke-width: 11;
+    }
+    .r-prog {
+      fill: none; stroke-width: 11;
+      stroke-linecap: round;
+      stroke-dasharray: 534.07;
+      stroke-dashoffset: 534.07;
+      transition: stroke-dashoffset 1.5s cubic-bezier(.34,1.15,.64,1),
+                  stroke .5s ease;
+    }
+    .score-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .score-num {
+      font-size: 3.2rem; font-weight: 700;
+      letter-spacing: -.05em; line-height: 1;
+      font-variant-numeric: tabular-nums;
+      transition: color .5s ease;
+    }
+    .score-unit {
+      font-size: .8rem; color: var(--t3);
+      font-weight: 400; margin-top: 2px;
+    }
+    .score-lbl {
+      font-size: 1.35rem; font-weight: 600;
+      letter-spacing: -.025em; margin-bottom: 5px;
+    }
+    .score-sub { font-size: .85rem; color: var(--t2); }
+
+    /* ── Time banner ─────────────────────────────────────────────── */
+    .timebanner {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 20px; margin-bottom: 12px;
+    }
+    .tb-icon { font-size: 1.75rem; line-height: 1; }
+    .tb-lbl {
+      font-size: .75rem; color: var(--t2);
+      text-transform: uppercase; letter-spacing: .07em;
+      font-weight: 600; margin-bottom: 3px;
+    }
+    .tb-val { font-size: .98rem; font-weight: 600; }
+    .golden { color: var(--c-green); }
+
+    /* ── Factor grid ─────────────────────────────────────────────── */
+    .fgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px; margin-bottom: 12px;
+    }
+    .fc {
+      padding: 17px 15px 14px;
+      display: flex; flex-direction: column; gap: 7px;
+      animation: fadein .35s ease both;
+    }
+    .fc-icon { font-size: 1.55rem; line-height: 1; }
+    .fc-name {
+      font-size: .72rem; color: var(--t2);
+      font-weight: 600; text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .fc-val {
+      font-size: 1rem; font-weight: 600;
+      letter-spacing: -.02em;
+    }
+    .fc-status { font-size: .76rem; color: var(--t2); }
+    .fc-bar-bg {
+      height: 4px; background: rgba(255,255,255,.10);
+      border-radius: 2px; overflow: hidden; margin-top: 2px;
+    }
+    .fc-bar {
+      height: 100%; border-radius: 2px;
+      transition: width 1.3s cubic-bezier(.34,1.15,.64,1);
+    }
+    .fc-score {
+      font-size: .75rem; font-weight: 600;
+      text-align: right; margin-top: -4px;
+    }
+
+    /* ── Weather detail ──────────────────────────────────────────── */
+    .wdetail { padding: 20px; margin-bottom: 12px; }
+    .card-ttl {
+      font-size: .75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--t2); margin-bottom: 16px;
+    }
+    .wgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .wi-lbl { font-size: .72rem; color: var(--t3); margin-bottom: 3px; }
+    .wi-val { font-size: 1.05rem; font-weight: 600; }
+
+    /* ── Hint card ───────────────────────────────────────────────── */
+    .hint {
+      padding: 14px 18px; margin-bottom: 12px;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .hint-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+    .hint-txt { font-size: .82rem; color: var(--t2); line-height: 1.5; }
+
+    /* ── Refresh row ─────────────────────────────────────────────── */
+    .refresh-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 10px;
+    }
+    .refbtn {
+      background: var(--glass); border: 1px solid var(--glass-b);
+      color: var(--c-green); font-family: var(--font);
+      font-size: .88rem; font-weight: 500;
+      padding: 10px 22px; border-radius: 100px;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all .2s ease;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .refbtn:hover {
+      background: rgba(48,209,88,.12);
+      border-color: rgba(48,209,88,.28);
+    }
+    .refbtn:active { transform: scale(.97); }
+    .spin { display: inline-block; }
+    .refbtn.loading .spin { animation: spinr .75s linear infinite; }
+    .lu { font-size: .76rem; color: var(--t3); }
+
+    /* ── Error ───────────────────────────────────────────────────── */
+    .err {
+      padding: 22px; text-align: center;
+      border-color: rgba(255,59,48,.28); margin-bottom: 12px;
+    }
+    .err p { color: var(--c-red); font-weight: 600; margin-bottom: 6px; font-size: 1rem; }
+    .err small { color: var(--t2); font-size: .82rem; }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      text-align: center; color: var(--t3);
+      font-size: .76rem; line-height: 1.6;
+    }
+
+    /* ── Loading shimmer ─────────────────────────────────────────── */
+    .shimmer-card {
+      padding: 24px; margin-bottom: 12px; border-radius: var(--r);
+    }
+    .shimline {
+      height: 14px; border-radius: 7px;
+      background: linear-gradient(90deg,
+        rgba(255,255,255,.06) 25%,
+        rgba(255,255,255,.12) 50%,
+        rgba(255,255,255,.06) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      margin-bottom: 10px;
+    }
+    .shimline.w60 { width: 60%; }
+    .shimline.w40 { width: 40%; }
+    .shimline.w80 { width: 80%; }
+
+    /* ── Animations ──────────────────────────────────────────────── */
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @keyframes spinr {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 380px) {
+      .fgrid { grid-template-columns: 1fr; }
+      .wgrid { grid-template-columns: 1fr; }
+      h1 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="container">
+
+  <header>
+    <div class="h-icon">🐗</div>
+    <div>
+      <h1>Jagd Score</h1>
+      <p class="subtitle">Wildschwein · Region Schaumburg / Minden</p>
+    </div>
+  </header>
+
+  <div class="rtoggle" role="group" aria-label="Region">
+    <button class="rbtn active" data-region="bueckeburg" onclick="switchRegion('bueckeburg')">Bückeburg</button>
+    <button class="rbtn" data-region="minden" onclick="switchRegion('minden')">Minden</button>
+  </div>
+
+  <section class="hero gc" aria-label="Gesamtscore">
+    <div class="ring-wrap">
+      <svg class="score-svg" viewBox="0 0 200 200" aria-hidden="true">
+        <defs>
+          <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle class="r-track" cx="100" cy="100" r="85"/>
+        <circle class="r-prog" id="ring" cx="100" cy="100" r="85"
+          stroke="#30d158" filter="url(#glow)"/>
+      </svg>
+      <div class="score-center">
+        <div class="score-num" id="snum">–</div>
+        <div class="score-unit">/100</div>
+      </div>
+    </div>
+    <div class="score-lbl" id="slbl">Lade Daten…</div>
+    <div class="score-sub" id="ssub"></div>
+  </section>
+
+  <div class="timebanner gc" id="tbanner">
+    <div class="tb-icon" id="tbicon">⏱️</div>
+    <div>
+      <div class="tb-lbl" id="tblbl">Nächstes Fenster</div>
+      <div class="tb-val" id="tbval">Berechne…</div>
+    </div>
+  </div>
+
+  <div class="fgrid" id="fgrid">
+    <!-- Shimmer placeholders -->
+    <div class="gc shimmer-card"><div class="shimline w60"></div><div class="shimline w40"></div><div class="shimline w80"></div></div>
+    <div class="gc shimmer-card"><div class="shimline w80"></div><div class="shimline w60"></div><div class="shimline w40"></div></div>
+    <div class="gc shimmer-card"><div class="shimline w40"></div><div class="shimline w80"></div><div class="shimline w60"></div></div>
+    <div class="gc shimmer-card"><div class="shimline w60"></div><div class="shimline w40"></div><div class="shimline w80"></div></div>
+    <div class="gc shimmer-card"><div class="shimline w80"></div><div class="shimline w60"></div><div class="shimline w40"></div></div>
+    <div class="gc shimmer-card"><div class="shimline w40"></div><div class="shimline w80"></div><div class="shimline w60"></div></div>
+  </div>
+
+  <section class="wdetail gc">
+    <div class="card-ttl">Wetter Details</div>
+    <div class="wgrid">
+      <div><div class="wi-lbl">Luftfeuchtigkeit</div><div class="wi-val" id="wHum">–</div></div>
+      <div><div class="wi-lbl">Bewölkung</div><div class="wi-val" id="wCloud">–</div></div>
+      <div><div class="wi-lbl">Windrichtung</div><div class="wi-val" id="wDir">–</div></div>
+      <div><div class="wi-lbl">Luftdruck</div><div class="wi-val" id="wPress">–</div></div>
+      <div><div class="wi-lbl">Wetter</div><div class="wi-val" id="wCode">–</div></div>
+      <div><div class="wi-lbl">Mondphase</div><div class="wi-val" id="wMoon">–</div></div>
+    </div>
+  </section>
+
+  <div class="hint gc">
+    <div class="hint-icon">💡</div>
+    <div class="hint-txt">
+      <strong>Tipp:</strong> Stelle dich immer quer zum Wind oder mit dem Wind im Rücken – Wildschweine verlassen sich hauptsächlich auf ihre Nase. Wind&shy;richtung beachten!
+    </div>
+  </div>
+
+  <div class="refresh-row">
+    <button class="refbtn" id="refbtn" onclick="loadData()">
+      <span class="spin" id="spicon">↻</span> Aktualisieren
+    </button>
+    <span class="lu" id="lu"></span>
+  </div>
+
+  <footer>
+    <p>Wetterdaten: Open-Meteo (open-meteo.com)</p>
+    <p>Region: Bückeburg &amp; Minden · Niedersachsen</p>
+    <p style="margin-top:6px;font-size:.7rem;opacity:.6">
+      Score = Näherungswert. Eigene Ortskenntnis geht vor.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+'use strict';
+
+// ── Constants ───────────────────────────────────────────────────────────────
+const CIRC = 2 * Math.PI * 85; // 534.07
+
+const REGIONS = {
+  bueckeburg: { name: 'Bückeburg', lat: 52.2614, lng: 9.0478 },
+  minden:     { name: 'Minden',    lat: 52.2894, lng: 8.9172 }
+};
+
+const W = { wind:.25, press:.20, moon:.15, time:.15, rain:.15, temp:.10 };
+
+// ── State ───────────────────────────────────────────────────────────────────
+let region = 'bueckeburg';
+
+// ── Moon Phase ──────────────────────────────────────────────────────────────
+function moonPhase(date) {
+  const KNOWN = new Date('2000-01-06T18:14:00Z');
+  const CYCLE = 29.530588853 * 86400000;
+  return (((date - KNOWN) % CYCLE) + CYCLE) % CYCLE / CYCLE;
+}
+
+function moonName(p) {
+  if (p < .0625 || p >= .9375) return { e:'🌑', n:'Neumond' };
+  if (p < .1875) return { e:'🌒', n:'Zunehmende Sichel' };
+  if (p < .3125) return { e:'🌓', n:'Erstes Viertel' };
+  if (p < .4375) return { e:'🌔', n:'Zunehmender Mond' };
+  if (p < .5625) return { e:'🌕', n:'Vollmond' };
+  if (p < .6875) return { e:'🌖', n:'Abnehmender Mond' };
+  if (p < .8125) return { e:'🌗', n:'Letztes Viertel' };
+  return { e:'🌘', n:'Abnehmende Sichel' };
+}
+
+// ── Sunrise / Sunset (NOAA simplified) ─────────────────────────────────────
+function sunTimes(lat, lon, date) {
+  const R = Math.PI / 180, D = 180 / Math.PI;
+  const JD = date.getTime() / 86400000 + 2440587.5;
+  const n  = JD - 2451545.0;
+  const L  = (280.460 + 0.9856474 * n) % 360;
+  const g  = (357.528 + 0.9856003 * n) * R;
+  const lam = (L + 1.915 * Math.sin(g) + 0.020 * Math.sin(2*g)) * R;
+  const eps = (23.439 - 0.0000004 * n) * R;
+  const sinD = Math.sin(eps) * Math.sin(lam);
+  const cosD = Math.cos(Math.asin(sinD));
+  const cosH = (Math.sin(-.01454) - Math.sin(lat*R)*sinD) / (Math.cos(lat*R)*cosD);
+  if (Math.abs(cosH) > 1) return null;
+  const H  = Math.acos(cosH) * D;
+  const RA = Math.atan2(Math.cos(eps)*Math.sin(lam), Math.cos(lam)) * D / 15;
+  const EoT = L/15 - ((RA+360) % 24);
+  const base = new Date(date); base.setUTCHours(0,0,0,0);
+  return {
+    rise: new Date(base.getTime() + (12 - H/15 - lon/15 - EoT) * 3600000),
+    set:  new Date(base.getTime() + (12 + H/15 - lon/15 - EoT) * 3600000)
+  };
+}
+
+// ── Scoring (0–10) ──────────────────────────────────────────────────────────
+function sWind(ms) {
+  // ms = m/s
+  if (ms < .3)  return 2;
+  if (ms < 1.0) return 5;
+  if (ms < 2.0) return 8;
+  if (ms <= 4.0) return 10;
+  if (ms <= 6.0) return 7;
+  if (ms <= 9.0) return 4;
+  return 1;
+}
+
+function sPress(delta) {
+  // delta hPa/3h (positive = rising)
+  if (delta > 3)    return 10;
+  if (delta > 1)    return 9;
+  if (delta > -.5)  return 7;
+  if (delta > -2)   return 4;
+  if (delta > -4)   return 2;
+  return 1;
+}
+
+function sMoon(p) {
+  // Cosine: Neumond(0)=10, Vollmond(.5)=0
+  return Math.max(1, Math.round(5 + 5 * Math.cos(2 * Math.PI * p)));
+}
+
+function sTime(now, sun) {
+  if (!sun) return 5;
+  const ms = now.getTime(), H = 3600000;
+  const dR = Math.abs(ms - sun.rise), dS = Math.abs(ms - sun.set);
+  if (dR <= H || dS <= H) return 10;      // golden window
+  if (dR <= 2*H || dS <= 2*H) return 7;  // approaching
+  const isNight = ms < sun.rise - H || ms > sun.set + H;
+  if (isNight) {
+    const h = now.getHours();
+    return (h >= 0 && h <= 4) ? 4 : 6;
+  }
+  const h = now.getHours();
+  return (h >= 10 && h <= 16) ? 2 : 4;   // midday worst
+}
+
+function sRain(mm) {
+  if (mm <= 0)    return 5;  // dry – neutral
+  if (mm < .2)   return 10; // drizzle – ideal
+  if (mm < 1.0)  return 9;
+  if (mm < 2.5)  return 6;
+  if (mm < 5.0)  return 3;
+  return 1;
+}
+
+function sTemp(t) {
+  if (t < -5) return 7;
+  if (t < 0)  return 9;
+  if (t < 5)  return 10;
+  if (t < 10) return 8;
+  if (t < 15) return 6;
+  if (t < 20) return 3;
+  return 1;
+}
+
+function totalScore(sc) {
+  return Math.min(100, Math.max(0, Math.round(
+    (sc.wind*W.wind + sc.press*W.press + sc.moon*W.moon +
+     sc.time*W.time + sc.rain*W.rain  + sc.temp*W.temp) * 10
+  )));
+}
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+function scoreColor(s) {
+  if (s >= 8) return '#30d158';
+  if (s >= 6) return '#34c759';
+  if (s >= 5) return '#ff9500';
+  if (s >= 3) return '#ff6b00';
+  return '#ff3b30';
+}
+
+function totalColor(s) {
+  if (s >= 78) return '#30d158';
+  if (s >= 60) return '#78d14a';
+  if (s >= 45) return '#ff9500';
+  if (s >= 30) return '#ff6b00';
+  return '#ff3b30';
+}
+
+function scoreTag(s) {
+  if (s >= 78) return '🎯 Ausgezeichnet';
+  if (s >= 62) return '✅ Gut';
+  if (s >= 46) return '〰️ Mittel';
+  if (s >= 30) return '⚠️ Schlecht';
+  return '🚫 Sehr Schlecht';
+}
+
+function windDir(deg) {
+  return ['N','NO','O','SO','S','SW','W','NW'][Math.round(((deg%360)+360)%360/45)%8];
+}
+
+function wmoLabel(c) {
+  const m = {
+    0:'Klar',1:'Überwiegend klar',2:'Leicht bewölkt',3:'Bedeckt',
+    45:'Nebel',48:'Raureif-Nebel',
+    51:'Leichter Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',
+    61:'Leichter Regen',63:'Regen',65:'Starker Regen',
+    71:'Leichter Schneefall',73:'Schneefall',75:'Starker Schneefall',
+    77:'Schneekörner',
+    80:'Leichte Regenschauer',81:'Regenschauer',82:'Starke Regenschauer',
+    85:'Schneeschauer',86:'Starke Schneeschauer',
+    95:'Gewitter',96:'Gewitter mit Hagel',99:'Starkes Gewitter'
+  };
+  return m[c] || `Code ${c}`;
+}
+
+function fmtTime(d) {
+  return d.toLocaleTimeString('de-DE', { hour:'2-digit', minute:'2-digit' });
+}
+
+function fmtDur(ms) {
+  const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000);
+  if (h === 0) return `${m} Min`;
+  if (m === 0) return `${h} Std`;
+  return `${h} Std ${m} Min`;
+}
+
+// ── Next golden window ───────────────────────────────────────────────────────
+function nextWindow(now, sun) {
+  if (!sun) return null;
+  const ms = now.getTime(), H = 3600000;
+  const windows = [
+    { name:'Morgenröte', icon:'🌅', start: sun.rise-H, end: sun.rise+H },
+    { name:'Abendröte',  icon:'🌆', start: sun.set-H,  end: sun.set+H  }
+  ];
+  for (const w of windows) {
+    if (ms >= w.start && ms <= w.end)
+      return { ...w, active: true, rem: w.end - ms };
+  }
+  const fut = windows.filter(w => w.start > ms).sort((a,b) => a.start - b.start);
+  if (fut.length) return { ...fut[0], active: false, eta: fut[0].start - ms };
+  return null;
+}
+
+// ── API ─────────────────────────────────────────────────────────────────────
+async function fetchWeather(lat, lng) {
+  const p = new URLSearchParams({
+    latitude:       lat,
+    longitude:      lng,
+    current:        'temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,wind_direction_10m,surface_pressure,cloud_cover,weather_code',
+    hourly:         'surface_pressure',
+    past_hours:     '3',
+    forecast_days:  '1',
+    wind_speed_unit:'ms',
+    timezone:       'Europe/Berlin'
+  });
+  const r = await fetch(`https://api.open-meteo.com/v1/forecast?${p}`);
+  if (!r.ok) throw new Error(`API Fehler ${r.status}`);
+  return r.json();
+}
+
+// ── Animate number ───────────────────────────────────────────────────────────
+function animNum(el, target, dur = 1400) {
+  const t0 = performance.now();
+  const tick = t => {
+    const p = Math.min((t - t0) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * e);
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+// ── Render ───────────────────────────────────────────────────────────────────
+function renderScore(total) {
+  const ring  = document.getElementById('ring');
+  const numEl = document.getElementById('snum');
+  const lblEl = document.getElementById('slbl');
+  const subEl = document.getElementById('ssub');
+
+  const col = totalColor(total);
+  ring.style.stroke = col;
+  ring.style.strokeDashoffset = CIRC * (1 - total / 100);
+  numEl.style.color = col;
+  animNum(numEl, total);
+
+  lblEl.textContent = scoreTag(total);
+  subEl.textContent = total >= 62 ? 'Gute Jagdbedingungen heute!'
+                    : total >= 46 ? 'Durchschnittliche Bedingungen.'
+                    : 'Eher ungünstig – besser abwarten.';
+}
+
+function renderTimeBanner(now, sun) {
+  const w = nextWindow(now, sun);
+  if (!w) { document.getElementById('tbval').textContent = 'Kein Fenster berechenbar'; return; }
+  document.getElementById('tbicon').textContent = w.icon;
+  if (w.active) {
+    document.getElementById('tblbl').textContent = `${w.name} – Jetzt aktiv!`;
+    document.getElementById('tbval').innerHTML =
+      `<span class="golden">Noch ${fmtDur(w.rem)}</span>`;
+  } else {
+    document.getElementById('tblbl').textContent = `Nächstes Fenster: ${w.name}`;
+    document.getElementById('tbval').textContent =
+      `In ${fmtDur(w.eta)} · um ${fmtTime(new Date(w.start))} Uhr`;
+  }
+}
+
+function renderFactors(sc, vals) {
+  const { windSpeed, pressDelta, moonP, precip, temp } = vals;
+  const mn = moonName(moonP);
+  const now = new Date();
+
+  const windStatus = windSpeed<.3 ? 'Windstille'
+    : windSpeed<1 ? 'Sehr schwach' : windSpeed<2 ? 'Schwache Brise'
+    : windSpeed<=4 ? 'Ideale Brise ✓' : windSpeed<=6 ? 'Leicht zu stark'
+    : windSpeed<=9 ? 'Zu stark' : 'Sturm';
+
+  const pressStatus = pressDelta > 3 ? 'Stark steigend ✓✓'
+    : pressDelta > 1 ? 'Steigend ✓' : pressDelta > -.5 ? 'Stabil'
+    : pressDelta > -2 ? 'Leicht fallend' : pressDelta > -4 ? 'Fallend'
+    : 'Stark fallend';
+
+  const moonDist = Math.min(moonP, 1 - moonP);
+  const moonStatus = moonDist < .07 ? 'Neumond – ideal ✓'
+    : moonDist < .15 ? 'Fast Neumond' : moonDist < .32 ? 'Halbmond'
+    : moonDist < .42 ? 'Fast Vollmond' : 'Vollmond';
+
+  const timeScore = sc.time;
+  const timeStatus = timeScore >= 10 ? '🌟 Goldene Stunde!'
+    : timeScore >= 7 ? 'Gute Jagdzeit' : timeScore >= 5 ? 'OK'
+    : timeScore >= 3 ? 'Ungünstige Zeit' : 'Schlechte Zeit';
+
+  const rainStatus = precip === 0 ? 'Trocken (neutral)'
+    : precip < .2 ? 'Nieselregen ✓' : precip < 1 ? 'Leichter Regen ✓'
+    : precip < 2.5 ? 'Mäßiger Regen' : precip < 5 ? 'Starker Regen' : 'Unwetter';
+
+  const tempStatus = temp < -5 ? 'Sehr kalt' : temp < 0 ? 'Kalt – gut ✓'
+    : temp < 5 ? 'Frisch – ideal ✓' : temp < 10 ? 'Kühl – gut'
+    : temp < 15 ? 'Mild – OK' : temp < 20 ? 'Warm – schlecht' : 'Zu warm';
+
+  const factors = [
+    { icon:'💨', name:'Wind',           s: sc.wind,  val:`${windSpeed.toFixed(1)} m/s`,          status: windStatus },
+    { icon:'📊', name:'Luftdruck-Trend',s: sc.press, val:`${pressDelta>=0?'+':''}${pressDelta.toFixed(1)} hPa/3h`, status: pressStatus },
+    { icon: mn.e,name:'Mondphase',      s: sc.moon,  val: mn.n,                                  status: moonStatus },
+    { icon:'🌅', name:'Zeitfenster',    s: sc.time,  val: fmtTime(new Date()),                   status: timeStatus },
+    { icon:'🌧️', name:'Niederschlag',   s: sc.rain,  val: precip>0?`${precip.toFixed(1)} mm/h`:'0 mm/h', status: rainStatus },
+    { icon:'🌡️', name:'Temperatur',     s: sc.temp,  val:`${temp.toFixed(1)} °C`,                status: tempStatus }
+  ];
+
+  document.getElementById('fgrid').innerHTML = factors.map((f, i) => {
+    const col = scoreColor(f.s);
+    const w   = (f.s / 10) * 100;
+    return `
+      <div class="fc gc" style="animation-delay:${i*70}ms">
+        <div class="fc-icon">${f.icon}</div>
+        <div class="fc-name">${f.name}</div>
+        <div class="fc-val">${f.val}</div>
+        <div class="fc-status">${f.status}</div>
+        <div class="fc-bar-bg">
+          <div class="fc-bar" style="width:${w}%;background:${col};"></div>
+        </div>
+        <div class="fc-score" style="color:${col}">${f.s}/10</div>
+      </div>`;
+  }).join('');
+}
+
+function renderWeather(c, moonP) {
+  document.getElementById('wHum').textContent   = `${c.relative_humidity_2m} %`;
+  document.getElementById('wCloud').textContent = `${c.cloud_cover} %`;
+  document.getElementById('wDir').textContent   = `${windDir(c.wind_direction_10m)} (${c.wind_direction_10m}°)`;
+  document.getElementById('wPress').textContent = `${Math.round(c.surface_pressure)} hPa`;
+  document.getElementById('wCode').textContent  = wmoLabel(c.weather_code);
+  const mn = moonName(moonP);
+  document.getElementById('wMoon').textContent  = `${mn.e} ${mn.n}`;
+}
+
+// ── Load Data ────────────────────────────────────────────────────────────────
+async function loadData() {
+  const btn = document.getElementById('refbtn');
+  btn.classList.add('loading');
+
+  const reg = REGIONS[region];
+  const now = new Date();
+  const sun = sunTimes(reg.lat, reg.lng, now);
+  const mp  = moonPhase(now);
+
+  try {
+    const json = await fetchWeather(reg.lat, reg.lng);
+    const c    = json.current;
+    const hp   = json.hourly?.surface_pressure ?? [];
+
+    // Pressure delta: current vs 3h ago (first hourly element)
+    const pastPress   = hp.length > 0 ? hp[0] : c.surface_pressure;
+    const pressDelta  = c.surface_pressure - pastPress;
+
+    const scores = {
+      wind:  sWind(c.wind_speed_10m),
+      press: sPress(pressDelta),
+      moon:  sMoon(mp),
+      time:  sTime(now, sun),
+      rain:  sRain(c.precipitation),
+      temp:  sTemp(c.temperature_2m)
+    };
+
+    const total = totalScore(scores);
+
+    renderScore(total);
+    renderTimeBanner(now, sun);
+    renderFactors(scores, {
+      windSpeed:  c.wind_speed_10m,
+      pressDelta,
+      moonP:      mp,
+      precip:     c.precipitation,
+      temp:       c.temperature_2m
+    });
+    renderWeather(c, mp);
+
+    document.getElementById('lu').textContent =
+      `Zuletzt: ${fmtTime(now)} Uhr`;
+
+  } catch (err) {
+    document.getElementById('fgrid').innerHTML = `
+      <div class="gc err" style="grid-column:1/-1">
+        <p>⚠️ Fehler beim Laden</p>
+        <small>${err.message}</small>
+      </div>`;
+    document.getElementById('slbl').textContent = '⚠️ Fehler';
+    document.getElementById('ssub').textContent  = 'Bitte Verbindung prüfen.';
+    console.error('Jagd Score Fehler:', err);
+  } finally {
+    btn.classList.remove('loading');
+  }
+}
+
+function switchRegion(key) {
+  if (key === region) return;
+  region = key;
+  document.querySelectorAll('.rbtn').forEach(b =>
+    b.classList.toggle('active', b.dataset.region === key));
+  loadData();
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+loadData();
+setInterval(loadData, 30 * 60 * 1000);
+</script>
+</body>
+</html>
