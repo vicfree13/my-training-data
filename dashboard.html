@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pre-Race Dashboard – 5km | 22. Mai 2026</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg:      #080810;
@@ -24,47 +24,179 @@
       --z4:      #ef5350;
     }
 
+    /* ── KEYFRAMES ──────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes popIn {
+      0%   { opacity: 0; transform: scale(.6); }
+      65%  { transform: scale(1.08); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slideLeft {
+      from { opacity: 0; transform: translateX(-28px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes goPulse {
+      0%,100% { box-shadow: 0 0 28px rgba(0,230,118,.45), 0 0 0 0 rgba(0,230,118,.3); }
+      50%      { box-shadow: 0 0 56px rgba(0,230,118,.8), 0 0 0 14px rgba(0,230,118,0); }
+    }
+    @keyframes gradientShift {
+      0%,100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+    @keyframes trackFill {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+    @keyframes barFill {
+      from { width: 0 !important; }
+    }
+    @keyframes tidFill {
+      from { flex-grow: 0; }
+    }
+    @keyframes countdownTick {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .6; }
+    }
+    @keyframes floatY {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position:  400px 0; }
+    }
+    @keyframes raceFlicker {
+      0%,90%,100% { opacity: 1; }
+      93%          { opacity: .3; }
+      96%          { opacity: 1; }
+      98%          { opacity: .5; }
+    }
+    @keyframes ringPop {
+      from { transform: scale(0); opacity: .8; }
+      to   { transform: scale(2.5); opacity: 0; }
+    }
+    @keyframes pillSlide {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes borderGlow {
+      0%,100% { border-color: var(--border); }
+      50%      { border-color: rgba(0,201,255,.35); }
+    }
+
+    /* ── BASE ───────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
       min-height: 100vh;
-      padding: 20px 16px 40px;
+      padding: 0 16px 60px;
+      overflow-x: hidden;
     }
 
-    /* ── HEADER ──────────────────────────────── */
+    /* ── PROGRESS TRACK (top) ───────────────────────── */
+    .top-track {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--border);
+      z-index: 100;
+    }
+    .top-track-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--blue));
+      width: 0;
+      animation: trackFill 2.4s cubic-bezier(.4,0,.2,1) .3s forwards;
+    }
+
+    /* ── HEADER ─────────────────────────────────────── */
     .header {
       text-align: center;
-      padding: 40px 20px 36px;
+      padding: 56px 20px 40px;
     }
     .header-tag {
       display: inline-block;
-      background: var(--accent);
+      background: linear-gradient(90deg, var(--accent), #ff9b70);
       color: #fff;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
-      padding: 5px 14px;
+      padding: 5px 16px;
       border-radius: 20px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
+      animation: popIn .5s cubic-bezier(.34,1.56,.64,1) .2s both;
     }
     .header h1 {
-      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-size: clamp(2.4rem, 7vw, 4.2rem);
       font-weight: 900;
       letter-spacing: -2px;
       color: #fff;
       line-height: 1;
+      animation: fadeUp .7s ease .4s both;
     }
-    .header h1 span { color: var(--accent); }
+    .header h1 span {
+      background: linear-gradient(90deg, var(--accent), #ff9b70, var(--accent));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease infinite;
+    }
     .header-sub {
       margin-top: 12px;
       color: var(--muted);
       font-size: 13px;
       letter-spacing: 1px;
+      animation: fadeIn .6s ease .8s both;
     }
 
-    /* ── LAYOUT ──────────────────────────────── */
+    /* ── COUNTDOWN ──────────────────────────────────── */
+    .countdown-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 20px;
+      animation: fadeUp .5s ease 1s both;
+    }
+    .countdown-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      text-align: center;
+      min-width: 64px;
+    }
+    .countdown-val {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      animation: countdownTick 1s ease infinite;
+    }
+    .countdown-unit {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .countdown-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 8px;
+      align-self: center;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────── */
     .wrap {
       max-width: 1020px;
       margin: 0 auto;
@@ -72,25 +204,31 @@
       flex-direction: column;
       gap: 14px;
     }
-    .row {
-      display: grid;
-      gap: 14px;
-    }
-    .row-2   { grid-template-columns: 1fr 1fr; }
-    .row-3   { grid-template-columns: 1fr 1fr 1fr; }
-    .row-2-1 { grid-template-columns: 2fr 1fr; }
+    .row   { display: grid; gap: 14px; }
+    .row-2 { grid-template-columns: 1fr 1fr; }
+    .row-3 { grid-template-columns: 1fr 1fr 1fr; }
 
     @media (max-width: 720px) {
-      .row-2, .row-3, .row-2-1 { grid-template-columns: 1fr; }
+      .row-2, .row-3 { grid-template-columns: 1fr; }
     }
 
-    /* ── CARDS ───────────────────────────────── */
+    /* ── CARDS ──────────────────────────────────────── */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 22px 24px;
+      opacity: 0;
+      transition: transform .25s ease, border-color .25s ease,
+                  box-shadow .25s ease;
     }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,107,53,.3);
+      box-shadow: 0 12px 40px rgba(0,0,0,.5);
+    }
+    .card.visible { animation: fadeUp .6s cubic-bezier(.22,1,.36,1) forwards; }
+
     .label {
       font-size: 10px;
       font-weight: 700;
@@ -100,33 +238,38 @@
       margin-bottom: 14px;
     }
 
-    /* ── READINESS ───────────────────────────── */
+    /* ── READINESS ──────────────────────────────────── */
     .readiness-card {
       background: linear-gradient(135deg, #0c1f0c, #091509);
       border-color: #1a361a;
       display: flex;
       align-items: center;
-      gap: 22px;
+      gap: 24px;
+    }
+    .readiness-card:hover { border-color: rgba(0,230,118,.4); }
+
+    .go-wrap { position: relative; flex-shrink: 0; }
+    .go-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid var(--green);
+      animation: ringPop 2s ease-out infinite;
     }
     .go-dot {
-      width: 70px;
-      height: 70px;
-      flex-shrink: 0;
+      position: relative;
+      width: 72px; height: 72px;
       border-radius: 50%;
       background: var(--green);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 30px;
-      box-shadow: 0 0 28px rgba(0,230,118,.45);
-      animation: glow 2.4s ease-in-out infinite;
+      animation: goPulse 2.4s ease-in-out infinite, floatY 4s ease-in-out infinite;
     }
-    @keyframes glow {
-      0%,100% { box-shadow: 0 0 28px rgba(0,230,118,.4); }
-      50%      { box-shadow: 0 0 48px rgba(0,230,118,.75); }
-    }
+
     .readiness-body h2 {
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 900;
       color: var(--green);
       line-height: 1;
@@ -136,63 +279,53 @@
       color: #4caf50;
       margin-top: 4px;
     }
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     .pill {
       font-size: 10px;
       font-weight: 700;
       padding: 3px 10px;
       border-radius: 12px;
+      opacity: 0;
     }
+    .pill.visible { animation: pillSlide .4s ease forwards; }
     .pill-green { background: rgba(0,230,118,.15); color: var(--green); }
     .pill-grey  { background: rgba(90,90,120,.2);  color: var(--muted); }
 
-    /* ── METRIC ──────────────────────────────── */
-    .metric-val {
-      font-size: 28px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1;
-    }
-    .metric-val.green { color: var(--green); }
-    .metric-val.blue  { color: var(--blue);  }
-    .metric-val.accent{ color: var(--accent);}
-    .metric-sub {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 3px;
-    }
-
+    /* ── METRICS ────────────────────────────────────── */
     .fitness-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 14px 0;
+    .metric-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
     }
-    .mini-row {
-      display: flex;
-      gap: 24px;
-    }
+    .metric-val.green  { color: var(--green); }
+    .metric-val.blue   { color: var(--blue);  }
+    .metric-val.accent { color: var(--accent);}
+    .metric-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+    .mini-row { display: flex; gap: 24px; }
 
-    /* ── RACE ESTIMATE ───────────────────────── */
+    /* ── RACE CARD ──────────────────────────────────── */
     .race-card {
       background: linear-gradient(135deg, #1c0e04, #130a03);
       border-color: #3d1f08;
     }
+    .race-card:hover { border-color: rgba(255,107,53,.5); }
+
     .race-time {
-      font-size: 56px;
+      font-size: 60px;
       font-weight: 900;
       color: var(--accent);
       letter-spacing: -3px;
       line-height: 1;
+      font-variant-numeric: tabular-nums;
+      animation: raceFlicker 8s ease infinite 3s;
     }
     .race-range {
       font-size: 13px;
@@ -200,27 +333,26 @@
       margin-top: 6px;
     }
     .race-range span { color: var(--text); }
-    .race-table {
-      margin-top: 16px;
-      padding-top: 14px;
-      border-top: 1px solid #3d1f08;
-    }
+    .race-table { margin-top: 16px; padding-top: 14px; border-top: 1px solid #3d1f08; }
     .race-row {
       display: flex;
       justify-content: space-between;
       font-size: 12px;
       padding: 4px 0;
+      opacity: 0;
     }
+    .race-row.visible { animation: slideLeft .4s ease forwards; }
     .race-row .k { color: var(--muted); }
     .race-row .v { color: var(--text); font-weight: 600; }
 
-    /* ── ZONE BARS ───────────────────────────── */
+    /* ── ZONE BARS ──────────────────────────────────── */
     .tid-stack {
       display: flex;
       height: 22px;
       border-radius: 11px;
       overflow: hidden;
       margin: 10px 0 8px;
+      gap: 2px;
     }
     .tid-seg {
       display: flex;
@@ -229,65 +361,64 @@
       font-size: 10px;
       font-weight: 800;
       color: rgba(0,0,0,.65);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: flex-grow .3s ease;
     }
+    .tid-seg.animated { animation: barFill 1.4s cubic-bezier(.4,0,.2,1) forwards; }
     .tid-legend {
       display: flex;
       gap: 14px;
       font-size: 11px;
       margin-bottom: 14px;
     }
-    .zone-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
+    .zone-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
     .zone-lbl { font-size: 11px; font-weight: 600; width: 22px; }
     .zone-track {
-      flex: 1;
-      height: 9px;
+      flex: 1; height: 9px;
       background: var(--border);
       border-radius: 5px;
       overflow: hidden;
     }
-    .zone-fill { height: 100%; border-radius: 5px; }
+    .zone-fill {
+      height: 100%;
+      border-radius: 5px;
+      width: 0;
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
     .zone-pct { font-size: 11px; color: var(--text); width: 32px; text-align: right; }
 
-    /* ── ACTIVITIES ──────────────────────────── */
+    /* ── ACTIVITIES ─────────────────────────────────── */
     .activity {
       display: flex;
       align-items: flex-start;
       gap: 12px;
       padding: 13px 0;
       border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transition: background .2s ease;
     }
     .activity:last-child { border-bottom: none; }
+    .activity:hover { background: rgba(255,255,255,.02); border-radius: 10px; padding-left: 8px; }
+    .activity.visible { animation: slideLeft .5s cubic-bezier(.22,1,.36,1) forwards; }
+
     .act-icon {
-      width: 38px;
-      height: 38px;
+      width: 38px; height: 38px;
       border-radius: 10px;
       background: var(--card2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 17px;
       flex-shrink: 0;
+      transition: transform .2s ease;
     }
-    .act-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.3;
-    }
-    .act-date { font-size: 11px; color: var(--muted); }
-    .act-stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 5px;
-    }
-    .act-stat { font-size: 11px; color: var(--muted); }
+    .activity:hover .act-icon { transform: scale(1.1) rotate(-5deg); }
+
+    .act-name  { font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; }
+    .act-date  { font-size: 11px; color: var(--muted); }
+    .act-stats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+    .act-stat  { font-size: 11px; color: var(--muted); }
     .act-stat strong { color: var(--text); }
+
     .badge {
       margin-left: auto;
       font-size: 10px;
@@ -296,49 +427,72 @@
       border-radius: 10px;
       white-space: nowrap;
       align-self: flex-start;
+      transition: transform .2s ease, box-shadow .2s ease;
     }
+    .badge:hover { transform: scale(1.08); }
     .badge-default { background: var(--card2); color: var(--muted); }
-    .badge-hard    { background: rgba(255,107,53,.2); color: var(--accent); }
+    .badge-hard    { background: rgba(255,107,53,.2); color: var(--accent); box-shadow: 0 0 8px rgba(255,107,53,.2); }
 
-    /* ── ATHLETE PROFILE ─────────────────────── */
-    .profile-row {
-      display: flex;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
-    .profile-stat { }
-    .profile-val {
-      font-size: 22px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1;
-    }
+    /* ── PROFILE ────────────────────────────────────── */
+    .profile-row { display: flex; gap: 28px; flex-wrap: wrap; }
+    .profile-val { font-size: 22px; font-weight: 800; color: #fff; line-height: 1; }
     .profile-key { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
-    /* ── FOOTER ──────────────────────────────── */
+    .profile-stat {
+      opacity: 0;
+      transition: transform .2s ease;
+    }
+    .profile-stat:hover { transform: scale(1.06); }
+    .profile-stat.visible { animation: popIn .5s cubic-bezier(.34,1.56,.64,1) forwards; }
+
+    /* ── FOOTER ─────────────────────────────────────── */
     footer {
       text-align: center;
       padding: 36px 20px 10px;
       color: var(--muted);
       font-size: 12px;
+      animation: fadeIn .6s ease 2s both;
     }
   </style>
 </head>
 <body>
 
+<!-- Progress track -->
+<div class="top-track"><div class="top-track-fill"></div></div>
+
+<!-- Header -->
 <div class="header">
   <div class="header-tag">Race Day Morgen</div>
   <h1>5 km <span>Wettkampf</span></h1>
   <p class="header-sub">22. Mai 2026 &nbsp;·&nbsp; vicfree13 &nbsp;·&nbsp; 25 Jahre Lauferfahrung</p>
+
+  <div class="countdown-wrap">
+    <div class="countdown-box">
+      <div class="countdown-val" id="cd-h">--</div>
+      <div class="countdown-unit">Std.</div>
+    </div>
+    <div class="countdown-label">bis zum Start</div>
+    <div class="countdown-box">
+      <div class="countdown-val" id="cd-m">--</div>
+      <div class="countdown-unit">Min.</div>
+    </div>
+    <div class="countdown-box">
+      <div class="countdown-val" id="cd-s">--</div>
+      <div class="countdown-unit">Sek.</div>
+    </div>
+  </div>
 </div>
 
 <div class="wrap">
 
-  <!-- ── Row 1: Readiness + Fitness ── -->
+  <!-- Row 1: Readiness + Fitness -->
   <div class="row row-2">
 
     <div class="card readiness-card">
-      <div class="go-dot">✓</div>
+      <div class="go-wrap">
+        <div class="go-ring"></div>
+        <div class="go-dot">✓</div>
+      </div>
       <div class="readiness-body">
         <div class="label">Bereitschaft</div>
         <h2>GO</h2>
@@ -357,26 +511,26 @@
       <div class="label">Form &amp; Fitness</div>
       <div class="fitness-grid">
         <div>
-          <div class="metric-val">25.2</div>
+          <div class="metric-val" data-target="25.2" data-decimal="1">0</div>
           <div class="metric-sub">CTL — Fitness</div>
         </div>
         <div>
-          <div class="metric-val">21.9</div>
+          <div class="metric-val" data-target="21.9" data-decimal="1">0</div>
           <div class="metric-sub">ATL — Ermüdung</div>
         </div>
         <div>
-          <div class="metric-val green">+3.3</div>
+          <div class="metric-val green" data-target="3.3" data-decimal="1" data-prefix="+">0</div>
           <div class="metric-sub">TSB — Form</div>
         </div>
         <div>
-          <div class="metric-val blue">0.67</div>
+          <div class="metric-val blue" data-target="0.67" data-decimal="2">0</div>
           <div class="metric-sub">ACWR — ausgeruht</div>
         </div>
       </div>
       <hr class="divider">
       <div class="mini-row">
         <div>
-          <div class="metric-val" style="font-size:20px">52</div>
+          <div class="metric-val" style="font-size:20px" data-target="52" data-decimal="0">0</div>
           <div class="metric-sub">Ruhepuls bpm (Basis 50)</div>
         </div>
         <div>
@@ -388,20 +542,18 @@
 
   </div>
 
-  <!-- ── Row 2: Race Estimate + Zones ── -->
+  <!-- Row 2: Race Estimate + Zones -->
   <div class="row row-2">
 
     <div class="card race-card">
       <div class="label">Zielzeit-Prognose · 5 km</div>
-      <div class="race-time">~20:45</div>
+      <div class="race-time" id="race-time">~00:00</div>
       <div class="race-range">
-        Bereich&nbsp;<span>20:00 – 21:30</span>
-        &nbsp;·&nbsp;
-        <span>4:00 – 4:18 /km</span>
+        Bereich &nbsp;<span>20:00 – 21:30</span>&nbsp;·&nbsp;<span>4:00 – 4:18 /km</span>
       </div>
       <div class="race-table">
         <div class="race-row">
-          <span class="k">8 × 400m Intervall-Pace</span>
+          <span class="k">8 × 400 m Intervall-Pace</span>
           <span class="v">3:35 /km</span>
         </div>
         <div class="race-row">
@@ -413,8 +565,8 @@
           <span class="v">168 bpm</span>
         </div>
         <div class="race-row">
-          <span class="k">TSB (Frische für morgen)</span>
-          <span class="v">+3.3 — ausgeruht</span>
+          <span class="k">TSB — Frische für morgen</span>
+          <span class="v">+3.3 ausgeruht</span>
         </div>
       </div>
     </div>
@@ -422,9 +574,9 @@
     <div class="card">
       <div class="label">Intensitätsverteilung · 7 Tage</div>
       <div class="tid-stack">
-        <div class="tid-seg" style="width:49.5%;background:var(--z1)">Z1</div>
-        <div class="tid-seg" style="width:27.9%;background:var(--z2)">Z2</div>
-        <div class="tid-seg" style="width:22.6%;background:var(--z4)">Z3</div>
+        <div class="tid-seg" style="flex:49.5;background:var(--z1)">Z1</div>
+        <div class="tid-seg" style="flex:27.9;background:var(--z2)">Z2</div>
+        <div class="tid-seg" style="flex:22.6;background:var(--z4)">Z3+</div>
       </div>
       <div class="tid-legend">
         <span style="color:var(--z1)">● Z1 49.5 %</span>
@@ -432,34 +584,34 @@
         <span style="color:var(--z4)">● Z3+ 22.6 %</span>
       </div>
       <div style="font-size:11px;color:var(--muted);margin-bottom:16px">
-        Pyramidal · PI 1.93 (28d)
+        Pyramidal · Polarisierungsindex 1.93 (28d)
       </div>
 
       <div class="zone-row">
         <span class="zone-lbl" style="color:var(--z1)">Z1</span>
-        <div class="zone-track"><div class="zone-fill" style="width:22%;background:var(--z1)"></div></div>
+        <div class="zone-track"><div class="zone-fill" data-width="22" style="background:var(--z1)"></div></div>
         <span class="zone-pct">22 %</span>
       </div>
       <div class="zone-row">
         <span class="zone-lbl" style="color:var(--z2)">Z2</span>
-        <div class="zone-track"><div class="zone-fill" style="width:27%;background:var(--z2)"></div></div>
+        <div class="zone-track"><div class="zone-fill" data-width="27" style="background:var(--z2)"></div></div>
         <span class="zone-pct">27 %</span>
       </div>
       <div class="zone-row">
         <span class="zone-lbl" style="color:var(--z3)">Z3</span>
-        <div class="zone-track"><div class="zone-fill" style="width:28%;background:var(--z3)"></div></div>
+        <div class="zone-track"><div class="zone-fill" data-width="28" style="background:var(--z3)"></div></div>
         <span class="zone-pct">28 %</span>
       </div>
       <div class="zone-row">
         <span class="zone-lbl" style="color:var(--z4)">Z4+</span>
-        <div class="zone-track"><div class="zone-fill" style="width:22%;background:var(--z4)"></div></div>
+        <div class="zone-track"><div class="zone-fill" data-width="22" style="background:var(--z4)"></div></div>
         <span class="zone-pct">22 %</span>
       </div>
     </div>
 
   </div>
 
-  <!-- ── Row 3: Recent Activities ── -->
+  <!-- Row 3: Activities -->
   <div class="card">
     <div class="label">Letzte 3 Trainingseinheiten</div>
 
@@ -515,7 +667,7 @@
     </div>
   </div>
 
-  <!-- ── Row 4: Athlete Profile ── -->
+  <!-- Row 4: Profile -->
   <div class="card">
     <div class="label">Athleten-Profil</div>
     <div class="profile-row">
@@ -556,5 +708,135 @@
   Generiert am 21. Mai 2026 &nbsp;·&nbsp; Daten: Intervals.icu via vicfree13/my-training-data
 </footer>
 
+<script>
+  /* ── COUNTDOWN ─────────────────────────────────── */
+  function updateCountdown() {
+    const race = new Date('2026-05-22T09:00:00+02:00');
+    const now  = new Date();
+    const diff = race - now;
+    if (diff <= 0) {
+      document.getElementById('cd-h').textContent = '00';
+      document.getElementById('cd-m').textContent = '00';
+      document.getElementById('cd-s').textContent = '00';
+      return;
+    }
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ── INTERSECTION OBSERVER ─────────────────────── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+
+      // Cards
+      if (el.classList.contains('card')) {
+        el.classList.add('visible');
+
+        // Count-up metrics inside this card
+        el.querySelectorAll('[data-target]').forEach((m, i) => {
+          setTimeout(() => animateCount(m), 300 + i * 80);
+        });
+
+        // Zone bars
+        el.querySelectorAll('.zone-fill').forEach((bar, i) => {
+          setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 400 + i * 120);
+        });
+
+        // Race rows
+        el.querySelectorAll('.race-row').forEach((r, i) => {
+          setTimeout(() => r.classList.add('visible'), 300 + i * 90);
+        });
+
+        // Activities
+        el.querySelectorAll('.activity').forEach((a, i) => {
+          setTimeout(() => a.classList.add('visible'), 200 + i * 130);
+        });
+
+        // Profile stats
+        el.querySelectorAll('.profile-stat').forEach((s, i) => {
+          setTimeout(() => s.classList.add('visible'), 100 + i * 80);
+        });
+
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.card').forEach(c => observer.observe(c));
+
+  // Fallback: ensure everything is visible after 2.5s (e.g. static screenshots)
+  setTimeout(() => {
+    document.querySelectorAll('.card').forEach((c, i) => {
+      if (!c.classList.contains('visible')) {
+        c.style.animationDelay = (i * 0.08) + 's';
+        c.classList.add('visible');
+        c.querySelectorAll('[data-target]').forEach((m, j) => setTimeout(() => animateCount(m), 100 + j*60));
+        c.querySelectorAll('.zone-fill').forEach((b, j) => setTimeout(() => { b.style.width = b.dataset.width + '%'; }, 200 + j*80));
+        c.querySelectorAll('.race-row').forEach((r, j) => setTimeout(() => r.classList.add('visible'), 100 + j*60));
+        c.querySelectorAll('.activity').forEach((a, j) => setTimeout(() => a.classList.add('visible'), 100 + j*100));
+        c.querySelectorAll('.profile-stat').forEach((s, j) => setTimeout(() => s.classList.add('visible'), 50 + j*60));
+      }
+    });
+  }, 2500);
+
+  // Pills (inside readiness card — slight delay chain)
+  document.querySelectorAll('.pill').forEach((p, i) => {
+    setTimeout(() => p.classList.add('visible'), 900 + i * 100);
+  });
+
+  /* ── NUMBER COUNT-UP ───────────────────────────── */
+  function animateCount(el) {
+    const target  = parseFloat(el.dataset.target);
+    const dec     = parseInt(el.dataset.decimal ?? '1');
+    const prefix  = el.dataset.prefix ?? '';
+    const dur     = 900;
+    const start   = performance.now();
+    function step(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = prefix + (target * ease).toFixed(dec);
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = prefix + target.toFixed(dec);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ── RACE TIME COUNT-UP ────────────────────────── */
+  (function () {
+    const TARGET_S = 20 * 60 + 45; // 1245 s
+    const DUR      = 1600;
+    const el       = document.getElementById('race-time');
+    const start    = performance.now() + 600; // slight delay
+
+    function fmt(s) {
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return `~${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+    }
+
+    function step(now) {
+      if (now < start) { requestAnimationFrame(step); return; }
+      const t = Math.min((now - start) / DUR, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = fmt(TARGET_S * ease);
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = fmt(TARGET_S);
+    }
+    requestAnimationFrame(step);
+  })();
+
+  /* ── CARD STAGGER DELAY ────────────────────────── */
+  document.querySelectorAll('.card').forEach((c, i) => {
+    c.style.animationDelay = (i * 0.1) + 's';
+  });
+</script>
 </body>
 </html>
