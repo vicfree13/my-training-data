@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚲 Fahrrad-Quiz</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 36px 32px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  h1 { font-size: 2rem; text-align: center; margin-bottom: 8px; }
+  h2 { font-size: 1.4rem; text-align: center; margin-bottom: 16px; }
+  p  { color: #555; line-height: 1.6; text-align: center; }
+
+  .subtitle { font-size: 1.1rem; color: #888; text-align: center; margin-bottom: 28px; }
+
+  /* Avatars */
+  .avatar-grid {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .avatar-btn {
+    font-size: 2.8rem;
+    background: #f0f0f0;
+    border: 3px solid transparent;
+    border-radius: 16px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .avatar-btn:hover { background: #e0e8ff; transform: scale(1.1); }
+  .avatar-btn.selected { border-color: #667eea; background: #e0e8ff; transform: scale(1.1); }
+
+  /* Input */
+  input[type="text"] {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1.1rem;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+    text-align: center;
+  }
+  input[type="text"]:focus { border-color: #667eea; }
+
+  /* Buttons */
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.5); }
+  .btn-primary:disabled { background: #ccc; transform: none; box-shadow: none; cursor: not-allowed; }
+
+  .btn-secondary {
+    background: #f0f0f0;
+    color: #444;
+    font-weight: 600;
+  }
+  .btn-secondary:hover { background: #e0e0e0; }
+
+  /* Progress bar */
+  .progress-wrap {
+    background: #eee;
+    border-radius: 10px;
+    height: 10px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: width 0.4s ease;
+  }
+
+  /* Category intro */
+  .category-icon { font-size: 5rem; text-align: center; display: block; margin-bottom: 16px; }
+
+  /* Question */
+  .question-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .category-tag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    color: white;
+  }
+  .cat-0 { background: #ff6b6b; }
+  .cat-1 { background: #4ecdc4; }
+  .cat-2 { background: #45b7d1; }
+
+  .q-counter { font-size: 0.85rem; color: #aaa; font-weight: 600; }
+
+  .question-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #222;
+    text-align: center;
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+
+  .answer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .answer-btn {
+    padding: 14px 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.4;
+    text-align: center;
+    color: #333;
+  }
+  .answer-btn:hover:not(:disabled) { border-color: #667eea; background: #f0f0ff; transform: scale(1.02); }
+  .answer-btn.correct { border-color: #2ecc71; background: #eafaf1; color: #1a7a45; }
+  .answer-btn.wrong   { border-color: #e74c3c; background: #fdf0ed; color: #a93226; }
+  .answer-btn.reveal  { border-color: #2ecc71; background: #eafaf1; color: #1a7a45; }
+  .answer-btn:disabled { cursor: default; }
+
+  /* Feedback */
+  .feedback-box {
+    display: none;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-top: 18px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    font-weight: 600;
+    text-align: center;
+  }
+  .feedback-box.correct-fb { background: #eafaf1; color: #1a7a45; border: 2px solid #2ecc71; }
+  .feedback-box.wrong-fb   { background: #fdf0ed; color: #a93226; border: 2px solid #e74c3c; }
+
+  .next-btn-wrap { margin-top: 14px; display: none; }
+
+  /* Category result */
+  .stars-wrap { text-align: center; font-size: 3.5rem; margin: 20px 0 10px; letter-spacing: 8px; }
+  .score-text { text-align: center; font-size: 1.1rem; color: #555; margin-bottom: 24px; }
+  .score-number { font-size: 2rem; font-weight: 800; color: #667eea; }
+
+  /* Final */
+  .certificate {
+    background: linear-gradient(135deg, #fff9e6, #fff3cc);
+    border: 3px solid #f0c040;
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+  }
+  .certificate::before, .certificate::after {
+    content: '🌟';
+    font-size: 1.8rem;
+    position: absolute;
+    top: 12px;
+  }
+  .certificate::before { left: 16px; }
+  .certificate::after  { right: 16px; }
+
+  .cert-title { font-size: 1rem; color: #888; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+  .cert-name  { font-size: 2rem; font-weight: 800; color: #333; margin: 8px 0; }
+  .cert-sub   { color: #666; font-size: 0.95rem; line-height: 1.5; }
+
+  .total-score {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #667eea;
+    margin: 16px 0 4px;
+  }
+  .total-label { text-align: center; color: #888; font-size: 0.9rem; margin-bottom: 20px; }
+
+  .cat-summary {
+    display: flex;
+    justify-content: space-around;
+    background: #f8f8f8;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .cat-item { text-align: center; }
+  .cat-item .ci-icon { font-size: 1.6rem; }
+  .cat-item .ci-stars { font-size: 0.9rem; }
+
+  /* Confetti canvas */
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* Shake animation */
+  @keyframes shake {
+    0%,100%{transform:translateX(0)}
+    20%{transform:translateX(-8px)}
+    40%{transform:translateX(8px)}
+    60%{transform:translateX(-6px)}
+    80%{transform:translateX(6px)}
+  }
+  .shake { animation: shake 0.4s ease; }
+
+  /* Bounce in */
+  @keyframes bounceIn {
+    0%{transform:scale(0.8);opacity:0}
+    60%{transform:scale(1.05)}
+    100%{transform:scale(1);opacity:1}
+  }
+  .bounce-in { animation: bounceIn 0.4s ease forwards; }
+
+  .player-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .player-avatar-lg { font-size: 2rem; }
+  .player-name-lg { font-size: 1.2rem; font-weight: 700; color: #444; }
+
+  @media (max-width: 400px) {
+    .answer-grid { grid-template-columns: 1fr; }
+    .card { padding: 24px 18px; }
+    h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="card">
+
+  <!-- SCREEN 1: START -->
+  <div id="screen-start" class="screen active">
+    <h1>🚲 Fahrrad-Quiz</h1>
+    <p class="subtitle">Lerne die Regeln für sicheres Radfahren!</p>
+
+    <label style="display:block;text-align:center;font-weight:600;color:#555;margin-bottom:8px;">Wie heißt du?</label>
+    <input type="text" id="name-input" placeholder="Dein Name..." maxlength="20">
+
+    <div style="text-align:center;font-weight:600;color:#555;margin-top:20px;margin-bottom:4px;">Wähle dein Fahrrad:</div>
+    <div class="avatar-grid" id="avatar-grid">
+      <button class="avatar-btn selected" data-avatar="🚲" onclick="selectAvatar(this)">🚲</button>
+      <button class="avatar-btn" data-avatar="🚵" onclick="selectAvatar(this)">🚵</button>
+      <button class="avatar-btn" data-avatar="🚴" onclick="selectAvatar(this)">🚴</button>
+      <button class="avatar-btn" data-avatar="⚡🚲" onclick="selectAvatar(this)">⚡🚲</button>
+    </div>
+
+    <div style="background:#f0f4ff;border-radius:14px;padding:16px;margin:20px 0;text-align:center;">
+      <div style="font-size:1.5rem;margin-bottom:6px;">🎯 3 Kategorien &nbsp;·&nbsp; 15 Fragen &nbsp;·&nbsp; 150 Punkte</div>
+      <div style="color:#888;font-size:0.9rem;">Beantworte jede Frage und lerne, warum die Antwort richtig ist!</div>
+    </div>
+
+    <button class="btn btn-primary" id="start-btn" onclick="startGame()" disabled>Los geht's! 🚀</button>
+  </div>
+
+  <!-- SCREEN 2: CATEGORY INTRO -->
+  <div id="screen-cat-intro" class="screen">
+    <span class="category-icon" id="cat-icon"></span>
+    <h2 id="cat-intro-title"></h2>
+    <p id="cat-intro-desc" style="margin-bottom:28px;"></p>
+    <div style="background:#f8f8f8;border-radius:14px;padding:14px;text-align:center;margin-bottom:24px;">
+      <div style="color:#888;font-size:0.9rem;">5 Fragen warten auf dich!</div>
+    </div>
+    <button class="btn btn-primary" onclick="startCategory()">Kategorie starten! ▶</button>
+  </div>
+
+  <!-- SCREEN 3: QUESTION -->
+  <div id="screen-question" class="screen">
+    <div class="question-header">
+      <span class="category-tag" id="q-cat-tag"></span>
+      <span class="q-counter" id="q-counter"></span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="q-progress"></div>
+    </div>
+
+    <div class="question-text" id="q-text"></div>
+
+    <div class="answer-grid" id="answer-grid"></div>
+
+    <div class="feedback-box" id="feedback-box"></div>
+
+    <div class="next-btn-wrap" id="next-btn-wrap">
+      <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Weiter →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: CATEGORY RESULT -->
+  <div id="screen-cat-result" class="screen">
+    <div class="player-badge">
+      <span class="player-avatar-lg" id="cr-avatar"></span>
+      <span class="player-name-lg" id="cr-name"></span>
+    </div>
+    <h2 id="cr-cat-title"></h2>
+    <div class="stars-wrap" id="cr-stars"></div>
+    <div class="score-text">
+      Du hast <span class="score-number" id="cr-correct"></span> von 5 Fragen richtig!<br>
+      +<span id="cr-points"></span> Punkte
+    </div>
+    <div class="feedback-box correct-fb" id="cr-msg" style="display:block;"></div>
+    <button class="btn btn-primary" id="cr-next-btn" onclick="nextCategory()" style="margin-top:20px;"></button>
+  </div>
+
+  <!-- SCREEN 5: FINAL -->
+  <div id="screen-final" class="screen">
+    <div class="certificate bounce-in">
+      <div class="cert-title">Urkunde</div>
+      <div class="cert-name" id="final-name"></div>
+      <div class="cert-sub">hat das Fahrrad-Quiz erfolgreich<br>abgeschlossen! 🎉</div>
+    </div>
+
+    <div class="total-score" id="final-score"></div>
+    <div class="total-label">von 150 möglichen Punkten</div>
+
+    <div class="cat-summary" id="cat-summary"></div>
+
+    <div id="final-msg" style="text-align:center;font-size:1rem;color:#555;margin-bottom:16px;"></div>
+
+    <button class="btn btn-primary" onclick="resetGame()">🔄 Nochmal spielen</button>
+    <button class="btn btn-secondary" onclick="shareScore()" style="margin-top:8px;">📋 Ergebnis kopieren</button>
+  </div>
+
+</div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const CATEGORIES = [
+  {
+    id: 0,
+    name: 'Verkehrsregeln',
+    icon: '🚦',
+    color: '#ff6b6b',
+    tagClass: 'cat-0',
+    desc: 'Kennst du die Regeln auf der Straße? Von Vorfahrt bis Ampeln – hier wird dein Wissen getestet!'
+  },
+  {
+    id: 1,
+    name: 'Handzeichen',
+    icon: '🤚',
+    color: '#4ecdc4',
+    tagClass: 'cat-1',
+    desc: 'Radfahrer müssen anderen zeigen, was sie vorhaben. Lerne die richtigen Handzeichen!'
+  },
+  {
+    id: 2,
+    name: 'Sicherheit',
+    icon: '🪖',
+    color: '#45b7d1',
+    tagClass: 'cat-2',
+    desc: 'Sicher ist sicher! Was braucht ein Fahrrad, damit du gut geschützt unterwegs bist?'
+  }
+];
+
+const QUESTIONS = [
+  // ── Kategorie 0: Verkehrsregeln ──
+  {
+    cat: 0,
+    q: 'Wer hat an einer Kreuzung ohne Schilder Vorfahrt?',
+    answers: ['Wer zuerst da ist', 'Der von rechts kommt', 'Der von links kommt', 'Wer schneller fährt'],
+    correct: 1,
+    explanation: '🚦 Richtig! „Rechts vor Links" gilt an Kreuzungen ohne Schilder. Wer von rechts kommt, darf zuerst fahren.'
+  },
+  {
+    cat: 0,
+    q: 'Was musst du bei einer roten Ampel tun?',
+    answers: ['Schnell drüberfahren', 'Langsam weiterfahren', 'Anhalten und warten', 'Klingeln und weiterfahren'],
+    correct: 2,
+    explanation: '🛑 Genau! Eine rote Ampel bedeutet immer: STOPP! Erst bei Grün darfst du weiterfahren.'
+  },
+  {
+    cat: 0,
+    q: 'Wo sollen Radfahrer auf der Straße fahren?',
+    answers: ['Auf dem Gehweg', 'In der Straßenmitte', 'Auf dem Radweg oder rechts', 'Auf der linken Seite'],
+    correct: 2,
+    explanation: '🛣️ Super! Wenn es einen Radweg gibt, musst du ihn benutzen. Sonst fährst du auf der rechten Fahrbahnseite.'
+  },
+  {
+    cat: 0,
+    q: 'Was gilt an einem Zebrastreifen, wenn du Fahrrad fährst?',
+    answers: ['Ich habe immer Vorfahrt', 'Fußgänger haben Vorfahrt – ich schiebe oder warte', 'Ich darf schnell drüberfahren', 'Autos müssen warten, Fahrräder dürfen fahren'],
+    correct: 1,
+    explanation: '🦓 Genau! Am Zebrastreifen haben Fußgänger Vorfahrt. Als Radfahrer steigst du ab und schiebst dein Rad.'
+  },
+  {
+    cat: 0,
+    q: 'Dürfen zwei Freunde nebeneinander auf dem Radweg fahren?',
+    answers: ['Ja, immer', 'Nein, niemals', 'Ja, wenn genug Platz ist und niemand behindert wird', 'Nur Erwachsene dürfen das'],
+    correct: 2,
+    explanation: '👫 Richtig! Nebeneinanderfahren ist erlaubt, wenn der Weg breit genug ist und ihr andere nicht behinderst.'
+  },
+
+  // ── Kategorie 1: Handzeichen ──
+  {
+    cat: 1,
+    q: 'Wie zeigst du an, dass du links abbiegen möchtest?',
+    answers: ['Beide Arme heben', 'Linken Arm waagerecht ausstrecken', 'Mit dem Kopf nicken', 'Rechten Arm heben'],
+    correct: 1,
+    explanation: '👈 Klasse! Für Linksabbiegen streckst du deinen linken Arm waagerecht aus. So sehen alle, was du vorhast!'
+  },
+  {
+    cat: 1,
+    q: 'Wie signalisierst du, dass du rechts abbiegen möchtest?',
+    answers: ['Rechten Arm waagerecht ausstrecken', 'Linken Arm nach oben strecken', 'Beide Daumen hoch', 'Schnell klingeln'],
+    correct: 0,
+    explanation: '👉 Sehr gut! Den rechten Arm waagerecht ausstrecken zeigt: Ich biege rechts ab!'
+  },
+  {
+    cat: 1,
+    q: 'Wie zeigst du an, dass du bremsen oder anhalten möchtest?',
+    answers: ['Beide Arme hoch strecken', 'Arm waagerecht ausstrecken', 'Arm schräg nach unten zeigen', 'Auf die Bremsen drücken ohne Zeichen'],
+    correct: 2,
+    explanation: '✋ Perfekt! Wenn du anhältst, zeigst du deinen Arm schräg nach unten – damit wissen alle: Ich bremse!'
+  },
+  {
+    cat: 1,
+    q: 'Warum sind Handzeichen so wichtig?',
+    answers: ['Sie sehen cool aus', 'Damit Autos und Fußgänger wissen, was ich als nächstes tue', 'Damit man freie Hände hat', 'Sie sind nicht wichtig'],
+    correct: 1,
+    explanation: '💡 Genau! Handzeichen sind Kommunikation. Alle im Straßenverkehr müssen wissen, was du vorhast – so vermeidest du Unfälle!'
+  },
+  {
+    cat: 1,
+    q: 'Wann solltest du das Handzeichen geben?',
+    answers: ['Erst beim Abbiegen', 'Kurz danach', 'Rechtzeitig vorher, damit andere reagieren können', 'Gar nicht, Klingeln reicht'],
+    correct: 2,
+    explanation: '⏰ Richtig! Das Handzeichen muss früh genug kommen, damit Autos und Fußgänger Zeit haben zu reagieren.'
+  },
+
+  // ── Kategorie 2: Sicherheit ──
+  {
+    cat: 2,
+    q: 'Was musst du beim Fahrradfahren immer tragen?',
+    answers: ['Handschuhe', 'Einen Helm', 'Eine Sonnenbrille', 'Knieschoner'],
+    correct: 1,
+    explanation: '⛑️ Super! Der Helm schützt deinen Kopf bei einem Sturz. Er ist das Wichtigste beim Radfahren!'
+  },
+  {
+    cat: 2,
+    q: 'Was brauchst du unbedingt, wenn du bei Dunkelheit fährst?',
+    answers: ['Eine Taschenlampe in der Hand', 'Licht vorne (weiß) und hinten (rot) am Fahrrad', 'Reflektierende Sticker', 'Ein Schild „Ich bin hier"'],
+    correct: 1,
+    explanation: '💡 Richtig! Weißes Licht vorne und rotes Licht hinten – beides ist Pflicht! Nur so siehst du und wirst du gesehen.'
+  },
+  {
+    cat: 2,
+    q: 'Wozu braucht ein Fahrrad eine Klingel?',
+    answers: ['Um Musik zu machen', 'Um andere zu warnen, z.B. Fußgänger auf dem Radweg', 'Um cooler auszusehen', 'Um das Fahrrad zu sperren'],
+    correct: 1,
+    explanation: '🔔 Genau! Mit der Klingel machst du andere auf dich aufmerksam – besonders wichtig bei Fußgängern auf dem Radweg.'
+  },
+  {
+    cat: 2,
+    q: 'Was bewirkt reflektierende Kleidung oder Reflektoren?',
+    answers: ['Sie macht wärmer', 'Sie leuchtet im Dunkeln und hilft Autofahrern, dich früh zu sehen', 'Sie ist nur für Erwachsene', 'Sie macht Fahrradfahren schneller'],
+    correct: 1,
+    explanation: '✨ Klasse! Reflektoren werfen das Licht von Autoscheinwerfern zurück. Autofahrer sehen dich viel früher – das rettet Leben!'
+  },
+  {
+    cat: 2,
+    q: 'Wann solltest du die Bremsen deines Fahrrads prüfen?',
+    answers: ['Einmal im Jahr', 'Nur wenn sie quietschen', 'Vor jeder Fahrt', 'Nur nach einem Sturz'],
+    correct: 2,
+    explanation: '🔧 Richtig! Vor jeder Fahrt kurz die Bremsen testen – so weißt du, dass du sicher stoppen kannst!'
+  }
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+
+let state = {
+  name: '',
+  avatar: '🚲',
+  currentCat: 0,
+  currentQIndex: 0,
+  catCorrect: [0, 0, 0],
+  totalScore: 0,
+  questionsInCat: 0,
+  catQueueIndex: 0
+};
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+document.getElementById('name-input').addEventListener('input', function() {
+  document.getElementById('start-btn').disabled = this.value.trim().length === 0;
+});
+
+function selectAvatar(btn) {
+  document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.avatar = btn.dataset.avatar;
+}
+
+function startGame() {
+  state.name = document.getElementById('name-input').value.trim();
+  if (!state.name) return;
+  state.currentCat = 0;
+  state.catCorrect = [0, 0, 0];
+  state.totalScore = 0;
+  showCategoryIntro(0);
+}
+
+// ─── CATEGORY FLOW ────────────────────────────────────────────────────────────
+
+function showCategoryIntro(catIdx) {
+  const cat = CATEGORIES[catIdx];
+  document.getElementById('cat-icon').textContent = cat.icon;
+  document.getElementById('cat-intro-title').textContent = `Kategorie ${catIdx + 1}: ${cat.name}`;
+  document.getElementById('cat-intro-desc').textContent = cat.desc;
+  showScreen('screen-cat-intro');
+}
+
+function startCategory() {
+  state.catQueueIndex = 0;
+  state.questionsInCat = 0;
+  showNextQuestion();
+}
+
+function getCatQuestions(catIdx) {
+  return QUESTIONS.filter(q => q.cat === catIdx);
+}
+
+function showNextQuestion() {
+  const catQs = getCatQuestions(state.currentCat);
+  if (state.catQueueIndex >= catQs.length) {
+    showCategoryResult();
+    return;
+  }
+  const q = catQs[state.catQueueIndex];
+  const cat = CATEGORIES[state.currentCat];
+  const total = catQs.length;
+
+  document.getElementById('q-cat-tag').textContent = cat.icon + ' ' + cat.name;
+  document.getElementById('q-cat-tag').className = 'category-tag ' + cat.tagClass;
+  document.getElementById('q-counter').textContent = `Frage ${state.catQueueIndex + 1} / ${total}`;
+  document.getElementById('q-progress').style.width = ((state.catQueueIndex / total) * 100) + '%';
+  document.getElementById('q-text').textContent = q.q;
+
+  const grid = document.getElementById('answer-grid');
+  grid.innerHTML = '';
+  q.answers.forEach((ans, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    btn.textContent = ans;
+    btn.onclick = () => handleAnswer(i, q);
+    grid.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'none';
+  fb.className = 'feedback-box';
+
+  document.getElementById('next-btn-wrap').style.display = 'none';
+  showScreen('screen-question');
+}
+
+function handleAnswer(idx, q) {
+  const btns = document.querySelectorAll('.answer-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const isCorrect = idx === q.correct;
+
+  btns[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    btns[q.correct].classList.add('reveal');
+  }
+
+  const fb = document.getElementById('feedback-box');
+  if (isCorrect) {
+    fb.className = 'feedback-box correct-fb';
+    fb.textContent = q.explanation;
+    state.catCorrect[state.currentCat]++;
+    state.totalScore += 10;
+    launchConfetti();
+  } else {
+    fb.className = 'feedback-box wrong-fb';
+    fb.textContent = '❌ Das war leider falsch. ' + q.explanation;
+    document.querySelector('.card').classList.add('shake');
+    setTimeout(() => document.querySelector('.card').classList.remove('shake'), 400);
+  }
+  fb.style.display = 'block';
+
+  document.getElementById('next-btn-wrap').style.display = 'block';
+  const isLast = state.catQueueIndex >= getCatQuestions(state.currentCat).length - 1;
+  document.getElementById('next-btn').textContent = isLast ? 'Kategorie abschließen ✅' : 'Weiter →';
+
+  state.catQueueIndex++;
+}
+
+function nextQuestion() {
+  document.getElementById('q-progress').style.width =
+    ((state.catQueueIndex / getCatQuestions(state.currentCat).length) * 100) + '%';
+  showNextQuestion();
+}
+
+// ─── CATEGORY RESULT ──────────────────────────────────────────────────────────
+
+function showCategoryResult() {
+  const cat = CATEGORIES[state.currentCat];
+  const correct = state.catCorrect[state.currentCat];
+  const points = correct * 10;
+  const stars = correct >= 5 ? '⭐⭐⭐' : correct >= 3 ? '⭐⭐' : '⭐';
+
+  document.getElementById('cr-avatar').textContent = state.avatar;
+  document.getElementById('cr-name').textContent = state.name;
+  document.getElementById('cr-cat-title').textContent = cat.icon + ' ' + cat.name + ' – Geschafft!';
+  document.getElementById('cr-stars').textContent = stars;
+  document.getElementById('cr-correct').textContent = correct;
+  document.getElementById('cr-points').textContent = points;
+
+  const msgs = {
+    5: '🏆 Wow, alles richtig! Du bist ein echter Fahrrad-Profi!',
+    4: '🎉 Toll gemacht! Fast perfekt – nur eine kleine Lücke.',
+    3: '👍 Gut gemacht! Die Hälfte richtig – du lernst schnell!',
+    2: '💪 Weiter so! Lies nochmal nach und versuche es erneut.',
+    1: '🌱 Noch am Lernen – das wird! Beim nächsten Mal schaffst du mehr!',
+    0: '🌱 Noch am Lernen – kein Problem! Beim nächsten Mal klappt es besser!'
+  };
+  document.getElementById('cr-msg').textContent = msgs[correct] || msgs[0];
+
+  const isLast = state.currentCat >= CATEGORIES.length - 1;
+  const nextBtn = document.getElementById('cr-next-btn');
+  nextBtn.textContent = isLast ? '🏁 Zum Ergebnis!' : `Weiter zu: ${CATEGORIES[state.currentCat + 1].icon} ${CATEGORIES[state.currentCat + 1].name}`;
+
+  if (correct === 5) launchConfetti();
+  showScreen('screen-cat-result');
+}
+
+function nextCategory() {
+  state.currentCat++;
+  if (state.currentCat >= CATEGORIES.length) {
+    showFinal();
+  } else {
+    showCategoryIntro(state.currentCat);
+  }
+}
+
+// ─── FINAL ────────────────────────────────────────────────────────────────────
+
+function showFinal() {
+  document.getElementById('final-name').textContent = state.avatar + ' ' + state.name;
+  document.getElementById('final-score').textContent = state.totalScore + ' Punkte';
+
+  const summary = document.getElementById('cat-summary');
+  summary.innerHTML = CATEGORIES.map((cat, i) => {
+    const c = state.catCorrect[i];
+    const stars = c >= 5 ? '⭐⭐⭐' : c >= 3 ? '⭐⭐' : '⭐';
+    return `<div class="cat-item">
+      <div class="ci-icon">${cat.icon}</div>
+      <div style="font-size:0.75rem;color:#888;margin:2px 0">${cat.name}</div>
+      <div class="ci-stars">${stars}</div>
+      <div style="font-size:0.8rem;font-weight:700;color:#667eea">${c}/5</div>
+    </div>`;
+  }).join('');
+
+  const pct = state.totalScore / 150;
+  let msg;
+  if (pct === 1)       msg = '🏆 100%! Du bist ein absoluter Fahrrad-Champion! Glückwunsch!';
+  else if (pct >= 0.8) msg = '🎉 Fantastisch! Du weißt schon sehr viel über sicheres Radfahren!';
+  else if (pct >= 0.6) msg = '👍 Gut gemacht! Mit etwas Übung wirst du noch besser!';
+  else if (pct >= 0.4) msg = '💪 Du hast einen guten Start! Üb weiter und werde zum Profi!';
+  else                 msg = '🌱 Jeder Profi hat mal angefangen! Versuche es nochmal!';
+  document.getElementById('final-msg').textContent = msg;
+
+  launchConfetti();
+  showScreen('screen-final');
+}
+
+function resetGame() {
+  state.name = '';
+  state.avatar = '🚲';
+  state.currentCat = 0;
+  state.catCorrect = [0, 0, 0];
+  state.totalScore = 0;
+  state.catQueueIndex = 0;
+
+  document.getElementById('name-input').value = '';
+  document.getElementById('start-btn').disabled = true;
+  document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelector('.avatar-btn[data-avatar="🚲"]').classList.add('selected');
+
+  showScreen('screen-start');
+}
+
+function shareScore() {
+  const text = `🚲 Fahrrad-Quiz Ergebnis von ${state.name} ${state.avatar}\n` +
+    `Punkte: ${state.totalScore}/150\n` +
+    CATEGORIES.map((cat, i) => {
+      const c = state.catCorrect[i];
+      const stars = c >= 5 ? '⭐⭐⭐' : c >= 3 ? '⭐⭐' : '⭐';
+      return `${cat.icon} ${cat.name}: ${stars} (${c}/5)`;
+    }).join('\n');
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => alert('✅ Ergebnis in die Zwischenablage kopiert!'));
+  } else {
+    alert(text);
+  }
+}
+
+// ─── SCREEN HELPER ────────────────────────────────────────────────────────────
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ─── CONFETTI ─────────────────────────────────────────────────────────────────
+
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#667eea','#764ba2','#ff6b6b','#4ecdc4','#ffe66d','#a8e6cf','#ff8b94'];
+  const pieces = [];
+  for (let i = 0; i < 120; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: -10 - Math.random() * 200,
+      size: 6 + Math.random() * 8,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 4,
+      vy: 3 + Math.random() * 5,
+      angle: Math.random() * Math.PI * 2,
+      va: (Math.random() - 0.5) * 0.2
+    });
+  }
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      ctx.restore();
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.1;
+      p.angle += p.va;
+    });
+    frame++;
+    if (frame < 120) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
+</script>
+</body>
+</html>
