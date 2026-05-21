@@ -57,6 +57,7 @@ jobs:
           GITHUB_REPO: ${{ github.repository }}
           WEEK_START: ${{ secrets.WEEK_START }}
           ZONE_PREFERENCE: ${{ secrets.ZONE_PREFERENCE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "🔍 Debug info:"
           echo "  Python version: $(python --version)"
