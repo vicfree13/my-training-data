@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ted Lasso Wisdom</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Nunito:wght@400;600;700;800&display=swap');
+
+    :root {
+      --richmond-blue: #003399;
+      --richmond-gold: #FFD700;
+      --richmond-red: #CC0000;
+      --cream: #FFF8E7;
+      --warm-brown: #8B6914;
+      --dark-blue: #001A66;
+      --light-gold: #FFF0A0;
+      --grass-green: #4A7C59;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--richmond-blue);
+      background-image:
+        radial-gradient(ellipse at top, #003fbb 0%, #001A66 60%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px 16px 40px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+      animation: fadeDown 0.7s ease both;
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--richmond-gold);
+      border-radius: 50px;
+      padding: 10px 24px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+    }
+
+    .logo-badge svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .logo-badge span {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.1rem;
+      color: var(--dark-blue);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: 'Abril Fatface', serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      color: #fff;
+      text-shadow: 2px 4px 12px rgba(0,0,0,0.4);
+      line-height: 1.1;
+    }
+
+    h1 span {
+      color: var(--richmond-gold);
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 8px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── COUNTER ── */
+    .counter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .counter-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--richmond-gold);
+      opacity: 0.4;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .counter-text {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.65);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* ── FLIP CARD ── */
+    .scene {
+      width: 100%;
+      max-width: 520px;
+      height: 380px;
+      perspective: 1000px;
+      cursor: pointer;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+      border-radius: 20px;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 32px;
+      overflow: hidden;
+    }
+
+    /* FRONT */
+    .card-front {
+      background: linear-gradient(145deg, #FFD700 0%, #FFA500 100%);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.4);
+    }
+
+    .card-front::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .card-front::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -30px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .quote-mark {
+      font-family: 'Abril Fatface', serif;
+      font-size: 6rem;
+      line-height: 0.5;
+      color: rgba(0,51,153,0.25);
+      position: absolute;
+      top: 20px; left: 24px;
+      user-select: none;
+    }
+
+    .quote-text {
+      font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      font-weight: 700;
+      color: var(--dark-blue);
+      text-align: center;
+      line-height: 1.55;
+      position: relative;
+      z-index: 1;
+      max-height: 260px;
+      overflow: hidden;
+    }
+
+    .quote-source {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: rgba(0,26,102,0.65);
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    .flip-hint {
+      position: absolute;
+      bottom: 18px;
+      right: 22px;
+      font-size: 0.72rem;
+      color: rgba(0,26,102,0.5);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .flip-hint svg {
+      width: 14px; height: 14px;
+    }
+
+    /* BACK */
+    .card-back {
+      background: linear-gradient(145deg, var(--dark-blue) 0%, #002288 100%);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+      transform: rotateY(180deg);
+    }
+
+    .card-back::before {
+      content: '';
+      position: absolute;
+      top: -50px; right: -50px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,215,0,0.07);
+    }
+
+    .back-label {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--richmond-gold);
+      font-weight: 800;
+      margin-bottom: 14px;
+      opacity: 0.8;
+    }
+
+    .explanation-text {
+      font-size: clamp(0.95rem, 2.3vw, 1.1rem);
+      color: rgba(255,255,255,0.92);
+      text-align: center;
+      line-height: 1.6;
+      max-height: 260px;
+      overflow: hidden;
+    }
+
+    .biscuit-icon {
+      position: absolute;
+      bottom: 18px;
+      right: 22px;
+      font-size: 1.4rem;
+      opacity: 0.5;
+    }
+
+    /* ── CONTROLS ── */
+    .controls {
+      display: flex;
+      gap: 14px;
+      margin-top: 28px;
+      align-items: center;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: var(--richmond-gold);
+      color: var(--dark-blue);
+      box-shadow: 0 6px 24px rgba(255,215,0,0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(255,215,0,0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      width: 100%;
+      max-width: 520px;
+      margin-top: 20px;
+      animation: fadeUp 1s ease both;
+    }
+
+    .progress-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.45);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--richmond-gold), #FFA500);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 32px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-enter {
+      animation: cardSwap 0.4s ease both;
+    }
+
+    @keyframes cardSwap {
+      from { opacity: 0; transform: scale(0.92) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 560px) {
+      .scene { height: 340px; }
+      .card-face { padding: 28px 22px; }
+      .controls { flex-direction: column; width: 100%; }
+      .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-badge">
+      <!-- AFC Richmond Lion (SVG) -->
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="18" fill="#003399"/>
+        <text x="18" y="24" font-size="20" text-anchor="middle" fill="#FFD700">🦁</text>
+      </svg>
+      <span>AFC Richmond</span>
+    </div>
+    <h1>Ted Lasso <span>Wisdom</span></h1>
+    <p class="subtitle">Believe &nbsp;·&nbsp; Be Curious &nbsp;·&nbsp; Be Kind</p>
+  </header>
+
+  <div class="counter-bar">
+    <div class="counter-dot" id="dot1"></div>
+    <span class="counter-text" id="counterText">Quote 1 / 100</span>
+    <div class="counter-dot" id="dot2"></div>
+  </div>
+
+  <!-- FLIP CARD -->
+  <div class="scene" id="scene" onclick="flipCard()">
+    <div class="card" id="card">
+
+      <!-- FRONT -->
+      <div class="card-face card-front">
+        <div class="quote-mark">"</div>
+        <p class="quote-text" id="quoteText"></p>
+        <p class="quote-source" id="quoteSource"></p>
+        <div class="flip-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Tippen zum Umdrehen
+        </div>
+      </div>
+
+      <!-- BACK -->
+      <div class="card-face card-back">
+        <p class="back-label">Was steckt dahinter?</p>
+        <p class="explanation-text" id="explanationText"></p>
+        <div class="biscuit-icon">🍪</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="btn btn-secondary" onclick="prevQuote()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M15 19l-7-7 7-7"/>
+      </svg>
+      Zurück
+    </button>
+    <button class="btn btn-primary" onclick="nextQuote()">
+      Nächster Spruch
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">Weisheiten gesehen: 0 / 100</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <footer>
+    "Taking on a challenge is a lot like riding a horse."<br>
+    AFC Richmond · Nelson Road · London
+  </footer>
+
+<script>
+const quotes = [
+  {
+    text: "Ich bin eine große Rakete, die auf Dich zugeflogen kommt, um Dir zu sagen, dass Du ein Wunder bist.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Ted nutzt diese ungewöhnliche Metapher, um Nate zu ermutigen, als dieser kaum an sich glaubt. Es geht darum, anderen zu zeigen, welches Potenzial sie haben – auch wenn sie es selbst nicht sehen."
+  },
+  {
+    text: "Believe.",
+    source: "Das AFC Richmond Schild",
+    explanation: "Das einfachste und zugleich kraftvollste Wort der Serie. Ted hängt es als erstes in der Umkleidekabine auf. Glaube – an sich selbst, an das Team, an den Prozess – ist die Grundlage von allem."
+  },
+  {
+    text: "Taking on a challenge is a lot like riding a horse. If you're comfortable while you're doing it, you're probably doing it wrong.",
+    source: "Ted Lasso – Staffel 1, Ep. 1",
+    explanation: "Wachstum passiert außerhalb der Komfortzone. Wenn alles leicht und bequem ist, fehlt der Anreiz zur Entwicklung. Unbehagen ist ein Zeichen, dass man echte Fortschritte macht."
+  },
+  {
+    text: "I have a favorite quote about curiosity – 'Be curious, not judgmental.'",
+    source: "Ted Lasso – Staffel 1, Ep. 8",
+    explanation: "Statt Situationen oder Menschen sofort zu beurteilen, sollte man mit offener Neugier herangehen. Urteile schließen Türen; Neugier öffnet sie. Das ist Teds Grundphilosophie im Umgang mit anderen."
+  },
+  {
+    text: "All people are different people.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Eine scheinbar einfache Aussage mit tiefem Inhalt: Jeder Mensch verdient es, als Individuum gesehen zu werden – mit eigener Geschichte, eigenen Stärken und eigenen Kämpfen. Keine Schublade passt auf alle."
+  },
+  {
+    text: "I think that's what it's all about. Helping people, right?",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Für Ted dreht sich Sport – und eigentlich das ganze Leben – um den Dienst am Menschen. Siege und Trophäen verblassen, aber eine echte Verbindung zu einem anderen Menschen bleibt."
+  },
+  {
+    text: "You know what the happiest animal on Earth is? It's a goldfish. You know why? Got a ten second memory.",
+    source: "Ted Lasso – Staffel 1, Ep. 10",
+    explanation: "Ted rät dem Team, Fehler nicht endlos nachzutragen – weder sich selbst noch anderen gegenüber. Ein kurzes Gedächtnis für das Negative ist ein Geschenk. Einfach weitermachen."
+  },
+  {
+    text: "For me, success is not about the wins and losses. It's about helping these young fellas be the best versions of themselves.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Ted definiert Erfolg radikal anders als die Sportwelt es erwartet. Nicht Punkte auf einer Tabelle, sondern der Charakter und das Wachstum der Menschen in seiner Obhut zählt."
+  },
+  {
+    text: "I have a feeling that's gonna be one of those things I look back on and realize it was the best thing that ever happened to me.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Ted sieht in Rückschlägen immer potenzielle Wendepunkte zum Guten. Diese Haltung – Schwierigkeiten als Sprungbrett zu sehen – ist ein Kern seines Optimismus."
+  },
+  {
+    text: "There's two buttons I never like to hit: that's panic and snooze.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Panik und Lethargie sind die beiden größten Feinde klarer Entscheidungen. Ted plädiert für Besonnenheit und Entschlossenheit – egal wie chaotisch die Lage ist."
+  },
+  {
+    text: "Every disadvantage has its advantage.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Inspiriert von Johan Cruijff. Was zunächst wie ein Nachteil aussieht, kann neue Perspektiven, kreative Lösungen und ungeahnte Stärken freisetzen."
+  },
+  {
+    text: "My job is to help these young men be the best version of themselves.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Führung bedeutet für Ted nicht Kontrolle, sondern Ermächtigung. Ein guter Coach – oder eine gute Führungskraft – schafft Bedingungen, unter denen andere aufblühen können."
+  },
+  {
+    text: "I want to be clear: I'm not that interesting. The team, they're interesting.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Echte Bescheidenheit: Ted lenkt das Rampenlicht weg von sich und hin auf die Menschen um ihn herum. Er sieht seine Rolle als Dienst, nicht als Selbstdarstellung."
+  },
+  {
+    text: "Do you believe in ghosts, Ted? I mean as a metaphor.",
+    source: "Higgins – Staffel 1",
+    explanation: "Higgins fragt nach den unsichtbaren Lasten der Vergangenheit, die uns heimsuchen. Der Dialog macht deutlich: Wir alle tragen Geister mit uns – unausgesprochene Ängste, alte Fehler. Sie anzuerkennen ist der erste Schritt zur Freiheit."
+  },
+  {
+    text: "I promise you there is something worse out there than being sad, and that's being alone and being sad.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Isolation verstärkt jeden negativen Gefühlszustand. Verbundenheit – auch wenn sie schmerzhaft ist – ist immer besser als das Ertragen von Schmerz allein. Ted ruft dazu auf, sich zu öffnen."
+  },
+  {
+    text: "Taking a chance on people. That's what it's all about.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Risiko ist der Preis echter Beziehungen. Wenn man anderen eine Chance gibt – auch wenn man enttäuscht werden könnte – sind das die Momente, aus denen Vertrauen und Loyalität entstehen."
+  },
+  {
+    text: "Nope, I'm not gonna feel sorry for myself.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Selbstmitleid ist eine Sackgasse. Ted wählt aktiv, nicht in der Opferrolle zu verweilen, sondern vorwärts zu blicken. Das ist keine Verdrängung – es ist eine bewusste Entscheidung für Handlungsfähigkeit."
+  },
+  {
+    text: "I think one of the neatest things about being a coach is that it don't matter how many mistakes you make, as long as you keep going.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Fehler sind unvermeidlich. Was zählt, ist Resilienz – die Bereitschaft, trotz Scheiterns aufzustehen und weiterzumachen. Ausdauer schlägt Perfektion."
+  },
+  {
+    text: "If you care about someone and you got a little love in your heart, there ain't nothing you can't get through together.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Liebe – in all ihren Formen – ist der stärkste Klebstoff für Teams, Familien und Freundschaften. Mit echter Fürsorge lässt sich fast jede Krise überwinden."
+  },
+  {
+    text: "The idea of 'It's the hope that kills you' is wrong. I believe in hope.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Der englische Fußball kennt den bitteren Spruch 'It's the hope that kills you.' Ted dreht ihn um: Hoffnung tötet nicht – sie trägt. Ohne Hoffnung kein Mut, kein Weitermachen."
+  },
+  {
+    text: "You say impossible, but all I hear is 'I'm possible.'",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Eine klassische Reframing-Technik: Was als unüberwindbar gilt, enthält im Wort selbst die Möglichkeit des Gelingens. Sprache formt, wie wir die Welt sehen."
+  },
+  {
+    text: "I appreciate you.",
+    source: "Ted Lasso – wiederholt",
+    explanation: "So schlicht wie wirkungsvoll. Ted sagt diese drei Worte ständig – und er meint sie. Wertschätzung klar auszudrücken kostet nichts und bedeutet alles."
+  },
+  {
+    text: "A good mentor hopes you'll move on; a great mentor knows you will.",
+    source: "Ted Lasso – Staffel 3",
+    explanation: "Echtes Mentoring strebt nach seiner eigenen Überflüssigkeit. Wenn ein Schützling wächst und eigene Wege geht, ist das der größte Erfolg – nicht Abhängigkeit, sondern Eigenständigkeit."
+  },
+  {
+    text: "The first step to being a good leader is listening to your team.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Führungskräfte, die nicht zuhören, verpassen die wichtigsten Informationen. Teds Stärke liegt darin, dass er wirklich zuhört – nicht um zu antworten, sondern um zu verstehen."
+  },
+  {
+    text: "You know what I hate more than losing? Being called a loser.",
+    source: "Roy Kent – Staffel 1",
+    explanation: "Roy spricht hier über Würde. Verlieren ist ein Ereignis; Verlierer zu sein ist eine Identität. Roy weigert sich, die zweite anzunehmen. Charakter zeigt sich darin, wie man verliert."
+  },
+  {
+    text: "We can do this, together.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Gemeinschaft ist Teds größte Ressource. 'Zusammen' ist nicht nur ein Wort – es ist eine Strategie, eine Haltung und ein Versprechen. Kein Problem ist zu groß, wenn man es nicht allein trägt."
+  },
+  {
+    text: "I've been doing some crying lately. It feels pretty good.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Ted normalisiert emotionale Verletzlichkeit bei Männern. Weinen ist kein Zeichen von Schwäche – es ist eine gesunde Verarbeitung. Diese Aussage war für viele Zuschauer befreiend."
+  },
+  {
+    text: "Morale is a muscle. You gotta work it out.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Gute Stimmung im Team entsteht nicht von selbst – sie wird durch bewusste Handlungen aufgebaut. Genauso wie ein Muskel braucht Teamgeist regelmäßige Pflege und Übung."
+  },
+  {
+    text: "Let's turn that frown upside down.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Teds unerschütterlicher Optimismus kann naiv wirken, ist aber eine Wahl. Er entscheidet sich aktiv für eine positive Haltung – und lädt andere ein, dasselbe zu tun."
+  },
+  {
+    text: "Football is life.",
+    source: "Dani Rojas – alle Staffeln",
+    explanation: "Danis liebste Lebensweisheit ist spielerisch einfach – aber hinter der Einfachheit steckt echte Leidenschaft. Wenn man etwas liebt wie Dani den Fußball, gibt man ihm alles."
+  },
+  {
+    text: "I think that's a good question. But I also think a good question deserves more than a quick answer.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Tiefe Fragen verdienen nachdenkliche Antworten. Ted lehrt, nicht vorschnell zu reagieren, sondern innezuhalten und wirklich zu reflektieren – eine Haltung, die in unserer schnellen Zeit selten geworden ist."
+  },
+  {
+    text: "Diamond dogs are go!",
+    source: "Ted Lasso – Staffel 1 & 2",
+    explanation: "Der Schlachtruf der inoffiziellen Beratungsrunde von Ted, Higgins, Nate und Coach Beard. Er symbolisiert: Wenn ein Mann allein nicht weiterkommt, holt man sich seine Vertrauensleute."
+  },
+  {
+    text: "I believe in you.",
+    source: "Ted Lasso – wiederholt",
+    explanation: "Drei Worte, die Berge versetzen können. Ted sagt das nicht als leere Floskel – er meint es. Und das Wissen, dass jemand an einem glaubt, kann eine Person vollständig verändern."
+  },
+  {
+    text: "Being brave is one of those things that doesn't get easier just because you did it once.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Mut ist keine feste Eigenschaft, die man einmal erwirbt. Er muss immer wieder neu aufgebracht werden. Jede mutige Handlung ist ein Sieg über die innere Angst."
+  },
+  {
+    text: "You want to know the best way to get over someone? Fall in love with someone else.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Für Ted bedeutet emotionale Heilung manchmal, sich wieder für etwas Neues zu öffnen – sei es Liebe, Freundschaft oder eine neue Leidenschaft. Beziehungen heilen uns oft besser als Einsamkeit."
+  },
+  {
+    text: "Don't let the wisdom get lost in translation.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Wichtige Wahrheiten können durch schlechte Kommunikation ihre Wirkung verlieren. Ted erinnert daran, dass Botschaften klar, einfach und verständlich formuliert sein müssen."
+  },
+  {
+    text: "I'd hate to see you thinking there's a ceiling on what you can accomplish.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Selbstgesetzte Grenzen sind die gefährlichsten. Ted bekämpft die inneren Decken seiner Spieler – die unsichtbaren Barrieren, die entstehen, wenn man sich selbst zu klein denkt."
+  },
+  {
+    text: "Success is not about the wins and losses.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Im modernen Sport wird Erfolg oft auf Zahlen reduziert. Ted weigert sich, diese Definition zu akzeptieren. Für ihn ist Entwicklung des Menschen der wahre Maßstab."
+  },
+  {
+    text: "I don't know exactly what a leader is, but I know how to be one.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Führung ist weniger eine abstrakte Theorie als eine gelebte Praxis. Man muss nicht alles über Leadership wissen – man muss täglich die richtigen Entscheidungen für andere treffen."
+  },
+  {
+    text: "Pork rinds and Doritos. That's a little care package right there.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Manchmal sind kleine Gesten der Fürsorge alles, was jemand braucht. Ein billiges Snack-Paket kann mehr sagen als tausend Worte, wenn es mit echter Aufmerksamkeit gegeben wird."
+  },
+  {
+    text: "I'm a work in progress.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Keine Person ist fertig – wir alle entwickeln uns weiter. Diesen Satz zu sagen erfordert Mut zur Offenheit und zur Bescheidenheit. Wachstum erkennt man daran, es anzuerkennen."
+  },
+  {
+    text: "If you're ever feeling lonely, just look at the moon. Everyone under the moon is connected.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Ted gibt einem Spieler Trost auf eine poetische Art: Egal wie weit Menschen voneinander entfernt sind, der Mond verbindet sie. Eine sanfte Erinnerung, dass wir nie wirklich allein sind."
+  },
+  {
+    text: "Maybe it's just about taking what's in front of you and making the most of it.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Anstatt auf ideale Umstände zu warten, geht es darum, das Beste aus der Gegenwart zu machen. Das ist praktischer Pragmatismus kombiniert mit Optimismus."
+  },
+  {
+    text: "Sometimes the best thing you can do is tell somebody the truth.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Ehrlichkeit kann schmerzhaft sein, aber sie ist ein Akt der Liebe. Wer jemandem die Wahrheit vorenthält, tut das oft aus Selbstschutz – nicht zum Wohl des anderen."
+  },
+  {
+    text: "There's no 'I' in 'team' – but there is a 'me' if you look hard enough.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Ted dreht das alte Cliché humorvoll um. Teamarbeit bedeutet nicht, die individuelle Stimme zu unterdrücken – im Gegenteil: Das Team wird stärker, wenn jeder sein authentisches Selbst einbringt."
+  },
+  {
+    text: "You got to believe in something. Otherwise why get up in the morning?",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Glaube – an eine Idee, ein Ziel, einen Menschen – gibt dem Leben Richtung und Bedeutung. Ohne etwas, wofür man aufsteht, fehlt die treibende Kraft."
+  },
+  {
+    text: "Make tea, not war.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Ted versucht die britische Teekultur zu verstehen und entdeckt dabei, dass ein gemeinsamer Moment über einer Tasse mehr schafft als jede Konfrontation. Verbindung statt Konflikt."
+  },
+  {
+    text: "Don't overthink it.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Analyse-Lähmung ist ein echter Feind des Handelns. Manchmal ist der mutigste Schritt, einfach zu tun – und im Nachgang aus dem Ergebnis zu lernen, nicht vorher alles zu perfektionieren."
+  },
+  {
+    text: "The bigger the challenge, the bigger the opportunity to grow.",
+    source: "Ted Lasso – Staffel 3",
+    explanation: "Schwierige Situationen sind kein Zeichen von Unglück – sie sind Einladungen zur Entwicklung. Je größer der Berg, desto schöner die Aussicht vom Gipfel."
+  },
+  {
+    text: "I think if you care about someone, show them.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Stille Zuneigung verpufft oft ungehört. Fürsorge muss aktiv ausgedrückt werden – durch Worte, Gesten, Zeit und Aufmerksamkeit. Warten, dass der andere es merkt, ist eine verpasste Chance."
+  },
+  {
+    text: "Roy Kent. He's here. He's there. He's every f***ing where.",
+    source: "AFC Richmond Fans",
+    explanation: "Der ikonische Fan-Gesang über Roy Kent. Er steht für die unerschütterliche Präsenz – körperlich und emotional – die ein Teamleader verkörpern muss. Immer da. Immer präsent."
+  },
+  {
+    text: "The best teachers are the ones who make you feel like they believe in you.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Glaube schafft Leistung. Wenn ein Lehrer, Trainer oder Mentor echte Überzeugung zeigt, entsteht beim Schüler der Mut, über sich hinauszuwachsen. Vertrauen ist der mächtigste Motivator."
+  },
+  {
+    text: "You know what I find funny about this game? You don't have to be perfect. You just have to keep trying.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Perfektion ist ein Mythos. Konsequenz ist die wahre Superkraft. Wer jeden Tag ein bisschen besser wird und nicht aufgibt, schlägt am Ende denjenigen, der auf den perfekten Moment wartet."
+  },
+  {
+    text: "We're gonna stick together. Like a family.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Ted baut AFC Richmond zu einer Gemeinschaft um, nicht zu einer bloßen Berufsgruppe. Familie bedeutet: man steht füreinander ein – in guten wie in schlechten Zeiten."
+  },
+  {
+    text: "Losing is not something I'm okay with.",
+    source: "Rebecca Welton – Staffel 1",
+    explanation: "Rebeccas anfängliche Härte und ihr kompromissloser Wille zeigen, dass hinter dem Streben nach Sieg oft tiefer Schmerz steckt. Ihr Weg ist einer der eindrucksvollsten Charakterentwicklungen der Serie."
+  },
+  {
+    text: "I love it so much, it's almost embarrassing.",
+    source: "Ted über seinen Beruf – Staffel 1",
+    explanation: "Leidenschaft für das, was man tut, ist kein Grund zur Scham. Ted liebt es, Trainer zu sein – mit jeder Faser. Wenn man das über seine Arbeit sagen kann, hat man etwas Großes gefunden."
+  },
+  {
+    text: "You know what's interesting about dogs? They live in the present. They don't worry about the future or dwell on the past.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Achtsamkeit und Präsenz – Teds unausgesprochene Philosophie. Die Vergangenheit ist unveränderlich, die Zukunft unsicher. Der einzige Moment, in dem wir handeln können, ist jetzt."
+  },
+  {
+    text: "Sometimes you need to take a step back to go two steps forward.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Rückschläge sind oft notwendig, um Kurs zu korrigieren. Wer immer nur vorwärtsprescht, riskiert, in die falsche Richtung zu rennen. Innehalten ist keine Schwäche – es ist Strategie."
+  },
+  {
+    text: "The truth will always come out.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Lügen und Täuschungen haben immer eine begrenzte Halbwertszeit. Ted glaubt an Integrität nicht nur als Ideal, sondern als praktisches Prinzip: Offenheit ist nachhaltiger als Vertuschung."
+  },
+  {
+    text: "It takes courage to be vulnerable.",
+    source: "Dr. Sharon – Staffel 2",
+    explanation: "Die Sportpsychologin bringt es auf den Punkt: Sich zu öffnen, Schwäche zu zeigen und um Hilfe zu bitten sind Akte des Mutes – nicht der Schwäche. Verwundbarkeit verbindet uns."
+  },
+  {
+    text: "What's your biggest fear?",
+    source: "Dr. Sharon zu Ted – Staffel 2",
+    explanation: "Diese einfache Frage öffnet bei Ted eine Flut unterdrückter Emotionen. Die Fähigkeit, die richtige Frage zu stellen, ist eine Kunst – und die Antworten offenbaren, wer wir wirklich sind."
+  },
+  {
+    text: "You don't have to have it all figured out to move forward.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Unvollständige Informationen sind der Normalzustand des Lebens. Warten, bis alles klar ist, bedeutet oft, nie zu starten. Mut ist, im Nebel vorwärtszugehen."
+  },
+  {
+    text: "Kindness is not weakness.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "In einer harten, wettbewerbsorientierten Welt wird Freundlichkeit oft als naiv oder schwach angesehen. Ted beweist das Gegenteil: Güte ist eine Stärke, die Loyalität und Vertrauen aufbaut."
+  },
+  {
+    text: "If you can't score, you ain't gonna win.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Klare, unverblümte Logik. Im Sport wie im Leben: Wenn man die entscheidenden Chancen nicht nutzt, wird man nicht erfolgreich sein. Handlung schlägt immer Theorie."
+  },
+  {
+    text: "Let's start by talking about what we can control.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Fokus auf das Steuerbare ist eines der wichtigsten Prinzipien stoischer Philosophie. Energie an unkontrollierbare Dinge zu verschwenden erschöpft. Konzentration auf das Machbare schafft Handlungskraft."
+  },
+  {
+    text: "Confidence is like a car. If you don't have any petrol, you're not going anywhere.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Selbstvertrauen ist der Treibstoff für Leistung. Ohne es stockt der Motor, egal wie fähig man ist. Teds Aufgabe ist oft, den Tank seiner Spieler wieder aufzufüllen."
+  },
+  {
+    text: "I've always found it easier to be brave when I know why I'm being brave.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Mut ohne Sinn ist Leichtsinn. Wenn man weiß, wofür man kämpft – für Familie, Werte, Träume – wird Tapferkeit nicht nur leichter, sondern unvermeidlich."
+  },
+  {
+    text: "The worst thing about being sad is how pathetic you feel.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Ted spricht ehrlich über die Scham, die oft Traurigkeit begleitet. Indem er das ausspricht, nimmt er dieser Scham die Macht. Traurigkeit ist menschlich – nicht erbärmlich."
+  },
+  {
+    text: "There's no shame in asking for help.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Eine der wichtigsten Botschaften der Serie. In einer Kultur, die Stärke glorifiziert und Hilfsbedürftigkeit stigmatisiert, ist dieser Satz revolutionär. Hilfe zu suchen ist Intelligenz, nicht Schwäche."
+  },
+  {
+    text: "Good teams become great ones when the members trust each other enough to surrender the 'me' for the 'we'.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Das Kern-Paradox von Teamarbeit: Individuen müssen ihren Ego zurückstellen, damit das Kollektiv aufblühen kann. Erst dann entsteht echte Teamgröße – nicht durch Addition, sondern durch Synergie."
+  },
+  {
+    text: "In order to be a good leader, you also have to follow.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Flexibilität in der Führungsrolle ist entscheidend. Wer immer kommandiert, hört auf, den Menschen um sich herum zuzuhören. Die besten Anführer wissen, wann sie folgen müssen."
+  },
+  {
+    text: "The only time you have to be brave is when you feel afraid.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Mut ist keine Abwesenheit von Angst – er ist das Handeln trotz ihr. Wer nie Angst hat, braucht keine Tapferkeit. Es ist die Angst, die dem Mut erst seine Bedeutung gibt."
+  },
+  {
+    text: "Sometimes things have to fall apart to make way for better things.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Altes muss manchmal Platz machen für Neues. Ein Scheitern ist oft kein Ende, sondern eine notwendige Auflösung – der erste Akt eines neuen Beginns."
+  },
+  {
+    text: "I want this team to be the best version of themselves. On and off the pitch.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Teds Anspruch geht über Sport hinaus. Er sieht seine Spieler als ganze Menschen, nicht als Athleten. Ihr Charakter, ihre Gesundheit, ihr Glück – all das liegt ihm am Herzen."
+  },
+  {
+    text: "Every rom-com I've seen in my life has been a lie.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Ted verarbeitet seinen Schmerz über das Scheitern seiner Ehe mit typischem Humor. Dahinter steckt eine ernste Wahrheit: Mediale Liebesbilder schaffen unrealistische Erwartungen, die echte Beziehungen belasten."
+  },
+  {
+    text: "Biscuits solve everything.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Teds tägliche Gewohnheit, Rebecca Shortbread-Kekse zu bringen, ist eine der herzerwärmendsten Gesten der Serie. Kleine, konsistente Akte der Fürsorge bauen mehr Vertrauen auf als große leere Gesten."
+  },
+  {
+    text: "We are who we are. But we don't have to stay that way.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Identität ist kein Schicksal. Wir sind Produkte unserer Vergangenheit – aber wir sind nicht daran gebunden. Jeder Moment bietet die Möglichkeit, eine neue Richtung einzuschlagen."
+  },
+  {
+    text: "Sometimes the bravest thing in the world is to just show up.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Nicht heroische Gesten, sondern schlichte Präsenz ist oft das, was andere am meisten brauchen. Erscheinen, wenn es schwer ist – das ist gelebte Fürsorge."
+  },
+  {
+    text: "I do love a locker room. It smells like potential.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Ted sieht Möglichkeiten, wo andere nur Schweiß und Erschöpfung wahrnehmen. Die Fähigkeit, Potenzial zu riechen – also zu erkennen, was sein könnte – ist das Markenzeichen guter Führungspersönlichkeiten."
+  },
+  {
+    text: "Barbecue sauce.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Teds berühmte Antwort, als Dr. Sharon fragt, was ihn glücklich macht. Einfach, ehrlich, entwaffnend. Die Fähigkeit, Freude in kleinen, konkreten Dingen zu finden, ist eine Form von Weisheit."
+  },
+  {
+    text: "You know what takes courage? Asking for help.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "In der Welt des Leistungssports gilt Verletzlichkeit als Risiko. Ted beweist das Gegenteil: Wer Hilfe annimmt, wächst. Wer sie ablehnt, kämpft unnötig allein."
+  },
+  {
+    text: "Just 'cause I'm not playing doesn't mean I'm not part of this team.",
+    source: "Nate – Staffel 1",
+    explanation: "Zugehörigkeit hängt nicht von Leistung oder Sichtbarkeit ab. Jeder, der sich einbringt – auch im Hintergrund –, ist ein vollwertiges Mitglied des Teams."
+  },
+  {
+    text: "I want everyone in this room to be comfortable enough to make mistakes.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Psychologische Sicherheit ist die Grundbedingung für Innovation und Wachstum. Wenn Fehler mit Scham bestraft werden, hört die Kreativität auf. Wenn sie geduldet werden, entsteht echter Fortschritt."
+  },
+  {
+    text: "A person can change. Anyone can change.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Niemand ist festgelegt. Die Idee, dass Menschen unveränderlich sind, ist eine der destruktivsten Überzeugungen. Nates Geschichte, Rebeccas Wandel – sie alle beweisen das Gegenteil."
+  },
+  {
+    text: "It's supposed to be hard. The hard is what makes it great.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Schwierigkeit ist kein Fehler im System – sie ist ein Feature. Die Dinge, die uns am meisten bedeuten, haben uns auch am meisten gekostet. Der Preis gibt dem Sieg seinen Wert."
+  },
+  {
+    text: "The best gift you can give someone is your full attention.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "In einer Welt voller Ablenkungen ist echte Aufmerksamkeit Luxus. Ted hört zu – wirklich zu. Dieses Geschenk, jemandem das Gefühl zu geben, wirklich gesehen zu werden, ist unbezahlbar."
+  },
+  {
+    text: "Not every loss is a lesson. But every loss should make you stronger.",
+    source: "Ted Lasso – Staffel 3",
+    explanation: "Verluste müssen nicht immer tiefe Bedeutung haben – aber sie sollten nie verschwenderisch sein. Wenn man nichts mitnimmt, verschwendet man den Schmerz. Jede Niederlage ist eine Investition in die Zukunft."
+  },
+  {
+    text: "You got this.",
+    source: "Ted Lasso – wiederholt",
+    explanation: "Simpel und mächtig. Manchmal braucht jemand nur diese beiden Worte – gesagt von jemandem, der es ehrlich meint –, um die Kraft zu finden, die er schon in sich trägt."
+  },
+  {
+    text: "People are smarter than we give them credit for.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Herablassung ist eine der häufigsten Fehler in Führung und Kommunikation. Ted respektiert die Intelligenz und Intuition seiner Spieler. Das schafft Eigenverantwortung statt Abhängigkeit."
+  },
+  {
+    text: "Winning is great, but it's not the only thing worth celebrating.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Ted feiert Tapferkeit, Zusammenhalt und persönliches Wachstum – auch wenn das Ergebnis eine Niederlage ist. Diese Haltung verändert, was als Erfolg gilt."
+  },
+  {
+    text: "The truth is, I don't know what I'm doing half the time. But I do it with my whole heart.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Kompetenz und Herzblut schließen sich nicht aus. Oft sind die Menschen, die am aufrichtigsten handeln, auch diejenigen, die am meisten bewegen – nicht weil sie alles wissen, sondern weil sie alles geben."
+  },
+  {
+    text: "Comparison is the thief of joy.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Dieses Zitat geht auf Theodore Roosevelt zurück. Ted wendet es konkret an: Wer sich ständig mit anderen misst, verliert den Blick für den eigenen Weg und die eigene Freude."
+  },
+  {
+    text: "The harder the battle, the sweeter the victory.",
+    source: "Ted Lasso – Staffel 3",
+    explanation: "Kontext gibt Errungenschaft ihre Bedeutung. Ein leicht erreichter Sieg verblasst schnell. Ein erkämpfter Triumph hingegen bleibt – weil er das Beste aus uns herausgeholt hat."
+  },
+  {
+    text: "Embrace the chaos.",
+    source: "Coach Beard – Staffel 2",
+    explanation: "Beards stille Weisheit: Das Leben ist chaotisch und unberechenbar. Wer das kämpfend akzeptiert, erschöpft sich. Wer es umarmt, findet darin eine seltsame Freiheit."
+  },
+  {
+    text: "Don't give up on yourself.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "In Teds dunkelsten Momenten ist es dieser innere Appell, der ihn aufrecht hält. Die Fähigkeit, sich selbst treu zu bleiben – auch wenn alles zusammenbricht –, ist die tiefste Form von Mut."
+  },
+  {
+    text: "People have to stop being scared of each other.",
+    source: "Ted Lasso – Staffel 2",
+    explanation: "Angst vor dem anderen – ob aus Konkurrenz, Vorurteil oder Verlust – ist das größte Hindernis für echte Verbindung. Ted löst diese Angst durch Offenheit, Humor und Großzügigkeit."
+  },
+  {
+    text: "I think that's the best part about sports: you can always start over.",
+    source: "Ted Lasso – Staffel 1",
+    explanation: "Jedes neue Spiel, jede neue Saison ist ein Neuanfang. Diese Eigenschaft des Sports – und des Lebens – ist ein Geschenk. Keine Niederlage ist endgültig, solange man weiterspielt."
+  }
+];
+
+// State
+let order = [];
+let currentIndex = 0;
+let seen = new Set();
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function init() {
+  order = shuffle(quotes.map((_, i) => i));
+  currentIndex = 0;
+  seen.clear();
+  showQuote(order[0]);
+}
+
+function showQuote(idx) {
+  const q = quotes[idx];
+  const card = document.getElementById('card');
+  const scene = document.getElementById('scene');
+
+  // Reset flip
+  card.classList.remove('flipped');
+
+  // Animate card in
+  scene.classList.remove('card-enter');
+  void scene.offsetWidth; // reflow
+  scene.classList.add('card-enter');
+
+  document.getElementById('quoteText').textContent = `"${q.text}"`;
+  document.getElementById('quoteSource').textContent = `— ${q.source}`;
+  document.getElementById('explanationText').textContent = q.explanation;
+
+  seen.add(idx);
+  updateUI();
+}
+
+function flipCard() {
+  document.getElementById('card').classList.toggle('flipped');
+}
+
+function nextQuote() {
+  if (currentIndex < order.length - 1) {
+    currentIndex++;
+  } else {
+    // reshuffle for new round
+    order = shuffle(quotes.map((_, i) => i));
+    currentIndex = 0;
+    seen.clear();
+  }
+  showQuote(order[currentIndex]);
+}
+
+function prevQuote() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    showQuote(order[currentIndex]);
+  }
+}
+
+function updateUI() {
+  document.getElementById('counterText').textContent =
+    `Quote ${currentIndex + 1} / ${quotes.length}`;
+  const pct = ((currentIndex + 1) / quotes.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent =
+    `Weisheiten gesehen: ${seen.size} / ${quotes.length}`;
+
+  // Pulse dots
+  const d1 = document.getElementById('dot1');
+  const d2 = document.getElementById('dot2');
+  d1.style.opacity = currentIndex > 0 ? '1' : '0.4';
+  d2.style.opacity = currentIndex < quotes.length - 1 ? '1' : '0.4';
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') nextQuote();
+  if (e.key === 'ArrowLeft') prevQuote();
+  if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    flipCard();
+  }
+});
+
+init();
+</script>
+</body>
+</html>
