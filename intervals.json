@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T11:57:05.436104",
+  "generated_at": "2026-06-18T20:42:28.808002",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -657,6 +657,34 @@
           "max_hr": 144,
           "avg_cadence": 89.021736,
           "zone": 1
+        }
+      ]
+    },
+    {
+      "activity_id": "i158405466",
+      "date": "2026-06-18",
+      "type": "Run",
+      "name": "Leopoldsh\u00f6he Laufen",
+      "interval_summary": [
+        "1x 2m31s 115bpm"
+      ],
+      "intervals": [
+        {
+          "type": "WORK",
+          "label": "151s@115bpm77rpm",
+          "duration_secs": 151,
+          "avg_hr": 115,
+          "max_hr": 146,
+          "avg_cadence": 77.01987,
+          "zone": 1
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 1,
+          "avg_hr": 147,
+          "max_hr": 147,
+          "avg_cadence": 87.0,
+          "zone": 2
         }
       ]
     }
