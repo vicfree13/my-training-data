@@ -1,93 +1,10 @@
 {
-  "generated_at": "2026-06-27T23:54:24.603299",
+  "generated_at": "2026-06-28T02:33:38.118186",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
-    {
-      "activity_id": "i156840501",
-      "date": "2026-06-13",
-      "type": "Run",
-      "name": "Leopoldsh\u00f6he Laufen",
-      "interval_summary": [
-        "6x 6m6s 133bpm",
-        "1x 2m16s 134bpm"
-      ],
-      "intervals": [
-        {
-          "type": "WORK",
-          "label": "366s@133bpm87rpm",
-          "duration_secs": 385,
-          "avg_hr": 128,
-          "max_hr": 137,
-          "avg_cadence": 85.97403,
-          "zone": 1
-        },
-        {
-          "type": "RECOVERY",
-          "duration_secs": 1,
-          "avg_hr": 131,
-          "max_hr": 131,
-          "avg_cadence": 85.0,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "366s@133bpm87rpm",
-          "duration_secs": 367,
-          "avg_hr": 134,
-          "max_hr": 142,
-          "avg_cadence": 87.36512,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "366s@133bpm87rpm",
-          "duration_secs": 356,
-          "avg_hr": 130,
-          "max_hr": 135,
-          "avg_cadence": 87.64045,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "366s@133bpm87rpm",
-          "duration_secs": 364,
-          "avg_hr": 132,
-          "max_hr": 140,
-          "avg_cadence": 86.87363,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "366s@133bpm87rpm",
-          "duration_secs": 357,
-          "avg_hr": 134,
-          "max_hr": 143,
-          "avg_cadence": 87.13165,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "366s@133bpm87rpm",
-          "duration_secs": 365,
-          "avg_hr": 138,
-          "max_hr": 144,
-          "avg_cadence": 87.53151,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "136s@134bpm88rpm",
-          "duration_secs": 136,
-          "avg_hr": 134,
-          "max_hr": 138,
-          "avg_cadence": 87.81618,
-          "zone": 1
-        }
-      ]
-    },
     {
       "activity_id": "i158032439",
       "date": "2026-06-17",
