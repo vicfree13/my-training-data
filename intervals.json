@@ -1,85 +1,10 @@
 {
-  "generated_at": "2026-07-01T23:02:16.765845",
+  "generated_at": "2026-07-02T00:19:26.775301",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
-    {
-      "activity_id": "i158032439",
-      "date": "2026-06-17",
-      "type": "Run",
-      "name": "Leopoldsh\u00f6he Laufen",
-      "interval_summary": [
-        "6x 5m24s 137bpm",
-        "1x 11s 135bpm"
-      ],
-      "intervals": [
-        {
-          "type": "WORK",
-          "label": "324s@137bpm89rpm",
-          "duration_secs": 323,
-          "avg_hr": 124,
-          "max_hr": 135,
-          "avg_cadence": 87.87926,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "324s@137bpm89rpm",
-          "duration_secs": 325,
-          "avg_hr": 139,
-          "max_hr": 148,
-          "avg_cadence": 89.44615,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "324s@137bpm89rpm",
-          "duration_secs": 321,
-          "avg_hr": 143,
-          "max_hr": 151,
-          "avg_cadence": 89.41433,
-          "zone": 2
-        },
-        {
-          "type": "WORK",
-          "label": "324s@137bpm89rpm",
-          "duration_secs": 325,
-          "avg_hr": 137,
-          "max_hr": 143,
-          "avg_cadence": 89.316925,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "324s@137bpm89rpm",
-          "duration_secs": 325,
-          "avg_hr": 142,
-          "max_hr": 149,
-          "avg_cadence": 89.50769,
-          "zone": 2
-        },
-        {
-          "type": "WORK",
-          "label": "324s@137bpm89rpm",
-          "duration_secs": 327,
-          "avg_hr": 139,
-          "max_hr": 146,
-          "avg_cadence": 88.81957,
-          "zone": 1
-        },
-        {
-          "type": "WORK",
-          "label": "11s@135bpm88rpm",
-          "duration_secs": 11,
-          "avg_hr": 135,
-          "max_hr": 136,
-          "avg_cadence": 88.36364,
-          "zone": 1
-        }
-      ]
-    },
     {
       "activity_id": "i158312042",
       "date": "2026-06-18",
