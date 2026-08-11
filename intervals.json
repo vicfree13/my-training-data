@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-11T10:32:07.982149",
+  "generated_at": "2026-08-11T11:27:30.312924",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -1203,6 +1203,158 @@
           "max_hr": 148,
           "avg_cadence": 92.42742,
           "zone": 2
+        }
+      ]
+    },
+    {
+      "activity_id": "i174700018",
+      "date": "2026-08-11",
+      "type": "Run",
+      "name": "Leopoldsh\u00f6he - 6 x 800m @ 3:50",
+      "interval_summary": [
+        "2x 5m4s 131bpm",
+        "6x 3m5s 159bpm",
+        "1x 5m23s 155bpm",
+        "1x 17s 153bpm"
+      ],
+      "intervals": [
+        {
+          "type": "WORK",
+          "label": "304s@131bpm90rpm",
+          "duration_secs": 302,
+          "avg_hr": 126,
+          "max_hr": 143,
+          "avg_cadence": 87.67219,
+          "zone": 1
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 1,
+          "avg_hr": 132,
+          "max_hr": 132,
+          "avg_cadence": 90.0,
+          "zone": 1
+        },
+        {
+          "type": "WORK",
+          "label": "304s@131bpm90rpm",
+          "duration_secs": 306,
+          "avg_hr": 135,
+          "max_hr": 146,
+          "avg_cadence": 91.503265,
+          "zone": 1
+        },
+        {
+          "type": "WORK",
+          "label": "185s@159bpm96rpm",
+          "duration_secs": 191,
+          "avg_hr": 156,
+          "max_hr": 159,
+          "avg_cadence": 95.36126,
+          "zone": 4
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 120,
+          "avg_hr": 142,
+          "max_hr": 154,
+          "avg_cadence": 89.808334,
+          "zone": 2
+        },
+        {
+          "type": "WORK",
+          "label": "185s@159bpm96rpm",
+          "duration_secs": 181,
+          "avg_hr": 155,
+          "max_hr": 163,
+          "avg_cadence": 96.76796,
+          "zone": 3
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 121,
+          "avg_hr": 149,
+          "max_hr": 163,
+          "avg_cadence": 89.28099,
+          "zone": 3
+        },
+        {
+          "type": "WORK",
+          "label": "185s@159bpm96rpm",
+          "duration_secs": 184,
+          "avg_hr": 157,
+          "max_hr": 164,
+          "avg_cadence": 96.70109,
+          "zone": 4
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 122,
+          "avg_hr": 155,
+          "max_hr": 164,
+          "avg_cadence": 89.696724,
+          "zone": 3
+        },
+        {
+          "type": "WORK",
+          "label": "185s@159bpm96rpm",
+          "duration_secs": 185,
+          "avg_hr": 162,
+          "max_hr": 167,
+          "avg_cadence": 96.77297,
+          "zone": 4
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 121,
+          "avg_hr": 158,
+          "max_hr": 168,
+          "avg_cadence": 88.5124,
+          "zone": 4
+        },
+        {
+          "type": "WORK",
+          "label": "185s@159bpm96rpm",
+          "duration_secs": 189,
+          "avg_hr": 163,
+          "max_hr": 166,
+          "avg_cadence": 96.17989,
+          "zone": 4
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 122,
+          "avg_hr": 158,
+          "max_hr": 167,
+          "avg_cadence": 89.29508,
+          "zone": 4
+        },
+        {
+          "type": "WORK",
+          "label": "185s@159bpm96rpm",
+          "duration_secs": 177,
+          "avg_hr": 163,
+          "max_hr": 167,
+          "avg_cadence": 96.90395,
+          "zone": 4
+        },
+        {
+          "type": "WORK",
+          "label": "323s@155bpm89rpm",
+          "duration_secs": 323,
+          "avg_hr": 155,
+          "max_hr": 167,
+          "avg_cadence": 88.88854,
+          "zone": 3
+        },
+        {
+          "type": "WORK",
+          "label": "17s@153bpm90rpm",
+          "duration_secs": 17,
+          "avg_hr": 153,
+          "max_hr": 154,
+          "avg_cadence": 89.52941,
+          "zone": 3
         }
       ]
     }
