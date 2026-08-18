@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18T06:00:38.119012",
+  "generated_at": "2026-08-18T07:00:57.464861",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -1028,6 +1028,36 @@
           "avg_hr": 128,
           "max_hr": 129,
           "avg_cadence": 89.04878,
+          "zone": 1
+        }
+      ]
+    },
+    {
+      "activity_id": "i177026223",
+      "date": "2026-08-18",
+      "type": "Run",
+      "name": "Golem Laufen",
+      "interval_summary": [
+        "1x 10m57s 99bpm",
+        "1x 7m12s 94bpm"
+      ],
+      "intervals": [
+        {
+          "type": "WORK",
+          "label": "657s@99bpm81rpm",
+          "duration_secs": 657,
+          "avg_hr": 99,
+          "max_hr": 119,
+          "avg_cadence": 80.69417,
+          "zone": 1
+        },
+        {
+          "type": "WORK",
+          "label": "432s@94bpm83rpm",
+          "duration_secs": 432,
+          "avg_hr": 94,
+          "max_hr": 108,
+          "avg_cadence": 82.82353,
           "zone": 1
         }
       ]
