@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T12:23:33.628224",
+  "generated_at": "2026-08-19T13:22:47.154241",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -925,6 +925,74 @@
           "max_hr": 108,
           "avg_cadence": 82.82353,
           "zone": 1
+        }
+      ]
+    },
+    {
+      "activity_id": "i177545826",
+      "date": "2026-08-19",
+      "type": "Run",
+      "name": "Golem Laufen",
+      "interval_summary": [
+        "1x 8m41s 122bpm",
+        "2x 5m1s 142bpm",
+        "2x 6m6s 137bpm",
+        "1x 1m40s 149bpm"
+      ],
+      "intervals": [
+        {
+          "type": "WORK",
+          "label": "521s@122bpm86rpm",
+          "duration_secs": 521,
+          "avg_hr": 122,
+          "max_hr": 134,
+          "avg_cadence": 85.92923,
+          "zone": 1
+        },
+        {
+          "type": "WORK",
+          "label": "301s@142bpm90rpm",
+          "duration_secs": 297,
+          "avg_hr": 138,
+          "max_hr": 142,
+          "avg_cadence": 90.508415,
+          "zone": 1
+        },
+        {
+          "type": "WORK",
+          "label": "366s@137bpm90rpm",
+          "duration_secs": 358,
+          "avg_hr": 137,
+          "max_hr": 145,
+          "avg_cadence": 89.9088,
+          "zone": 1
+        },
+        {
+          "type": "WORK",
+          "label": "366s@137bpm90rpm",
+          "duration_secs": 374,
+          "avg_hr": 137,
+          "max_hr": 144,
+          "avg_cadence": 89.82201,
+          "zone": 1
+        },
+        {
+          "type": "WORK",
+          "label": "301s@142bpm90rpm",
+          "duration_secs": 304,
+          "avg_hr": 146,
+          "max_hr": 149,
+          "avg_cadence": 90.3454,
+          "zone": 2
+        },
+        {
+          "type": "WORK",
+          "label": "100s@149bpm89rpm",
+          "duration_secs": 100,
+          "avg_hr": 149,
+          "max_hr": 151,
+          "avg_cadence": 89.47,
+          "zone": 3
         }
       ]
     }
